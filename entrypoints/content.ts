@@ -22,14 +22,7 @@ function enterZenMode(): void {
     return;
   }
 
-  activeReader = createReaderOverlay(
-    article,
-    exitZenMode,
-    () => {
-      showToast('Done reading', 1000);
-      window.setTimeout(exitZenMode, 1000);
-    },
-  );
+  activeReader = createReaderOverlay(article, exitZenMode);
 }
 
 export default defineContentScript({

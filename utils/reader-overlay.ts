@@ -1,6 +1,5 @@
 import readerStyles from '~/assets/reader.css?inline';
 import type { ExtractedArticle } from './extract-article';
-import { attachScrollTracker } from './scroll-tracker';
 
 const OVERLAY_ID = 'zen-mode-overlay';
 const STYLE_ID = 'zen-mode-styles';
@@ -45,7 +44,6 @@ function buildByline(article: ExtractedArticle): string | null {
 export function createReaderOverlay(
   article: ExtractedArticle,
   onExit: () => void,
-  onComplete: () => void,
 ): ReaderOverlayHandle {
   ensureStyles();
 
@@ -101,8 +99,6 @@ export function createReaderOverlay(
   document.body.appendChild(overlay);
   document.body.classList.add('zen-mode-active');
 
-  const detachScrollTracker = attachScrollTracker(overlay, onComplete);
-
   const handleKeyDown = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') {
       event.preventDefault();
@@ -115,7 +111,6 @@ export function createReaderOverlay(
   return {
     overlay,
     destroy: () => {
-      detachScrollTracker();
       document.removeEventListener('keydown', handleKeyDown);
       overlay.remove();
       document.body.classList.remove('zen-mode-active');
