@@ -1,0 +1,120 @@
+.zen-mode-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  background: #faf9f7;
+  color: #1a1a1a;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.zen-mode-reader {
+  box-sizing: border-box;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 3rem 2rem 5rem;
+}
+
+.zen-mode-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e8e6e3;
+}
+
+.zen-mode-title {
+  margin: 0 0 0.75rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.zen-mode-byline {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.zen-mode-content {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.zen-mode-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.zen-mode-content a {
+  color: #1a5fb4;
+}
+
+.zen-mode-content p {
+  margin: 0 0 1.25rem;
+}
+
+.zen-mode-content h2,
+.zen-mode-content h3,
+.zen-mode-content h4 {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.3;
+  margin: 2rem 0 1rem;
+}
+
+.zen-mode-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e8e6e3;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.8125rem;
+  color: #888;
+}
+
+.zen-mode-exit-btn {
+  border: 1px solid #d4d2cf;
+  border-radius: 6px;
+  background: #fff;
+  color: #444;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.zen-mode-exit-btn:hover {
+  background: #f3f2f0;
+  border-color: #bbb;
+}
+
+.zen-mode-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  z-index: 2147483647;
+  transform: translateX(-50%) translateY(1rem);
+  border-radius: 8px;
+  background: #1a1a1a;
+  color: #faf9f7;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.875rem;
+  opacity: 0;
+  padding: 0.75rem 1.25rem;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.zen-mode-toast--visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+body.zen-mode-active {
+  overflow: hidden;
+}
