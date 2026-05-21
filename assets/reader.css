@@ -1,16 +1,25 @@
 .zen-mode-overlay {
+  --zen-bg: #F5F5F0;
+  --zen-text: #222222;
+  --zen-border: #E0E0DB;
+  --zen-muted: #666666;
+  --zen-font-size: 1.125rem;
+  --zen-line-height: 1.6;
+  --zen-max-width: 70ch;
+
   position: fixed;
   inset: 0;
   z-index: 2147483647;
-  background: #faf9f7;
-  color: #1a1a1a;
+  background: var(--zen-bg);
+  color: var(--zen-text);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
 .zen-mode-reader {
   box-sizing: border-box;
-  max-width: 680px;
+  max-width: var(--zen-max-width);
   margin: 0 auto;
   padding: 3rem 2rem 5rem;
 }
@@ -18,28 +27,28 @@
 .zen-mode-header {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #e8e6e3;
+  border-bottom: 1px solid var(--zen-border);
 }
 
 .zen-mode-title {
   margin: 0 0 0.75rem;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 2rem;
+  font-family: inherit;
+  font-size: 1.75rem;
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 1.3;
 }
 
 .zen-mode-byline {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: inherit;
   font-size: 0.875rem;
-  color: #666;
+  color: var(--zen-muted);
 }
 
 .zen-mode-content {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 18px;
-  line-height: 1.7;
+  font-family: inherit;
+  font-size: var(--zen-font-size);
+  line-height: var(--zen-line-height);
 }
 
 .zen-mode-content img {
@@ -48,7 +57,13 @@
 }
 
 .zen-mode-content a {
-  color: #1a5fb4;
+  color: var(--zen-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.zen-mode-content a:hover {
+  opacity: 0.7;
 }
 
 .zen-mode-content p {
@@ -58,7 +73,8 @@
 .zen-mode-content h2,
 .zen-mode-content h3,
 .zen-mode-content h4 {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: inherit;
+  font-weight: 700;
   line-height: 1.3;
   margin: 2rem 0 1rem;
 }
@@ -70,17 +86,17 @@
   gap: 1rem;
   margin-top: 3rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e8e6e3;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  border-top: 1px solid var(--zen-border);
+  font-family: inherit;
   font-size: 0.8125rem;
-  color: #888;
+  color: var(--zen-muted);
 }
 
 .zen-mode-exit-btn {
-  border: 1px solid #d4d2cf;
+  border: 1px solid #D4D4CF;
   border-radius: 6px;
-  background: #fff;
-  color: #444;
+  background: #FAFAF5;
+  color: #444444;
   cursor: pointer;
   font: inherit;
   font-size: 0.875rem;
@@ -89,8 +105,8 @@
 }
 
 .zen-mode-exit-btn:hover {
-  background: #f3f2f0;
-  border-color: #bbb;
+  background: var(--zen-bg);
+  border-color: var(--zen-border);
 }
 
 .zen-mode-toast {
@@ -100,9 +116,9 @@
   z-index: 2147483647;
   transform: translateX(-50%) translateY(1rem);
   border-radius: 8px;
-  background: #1a1a1a;
-  color: #faf9f7;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #222222;
+  color: #F5F5F0;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 0.875rem;
   opacity: 0;
   padding: 0.75rem 1.25rem;

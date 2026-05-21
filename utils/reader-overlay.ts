@@ -10,6 +10,19 @@ export interface ReaderOverlayHandle {
   destroy: () => void;
 }
 
+function buildFontFace(): string {
+  const fontUrl = browser.runtime.getURL('/fonts/InterVariable.ttf');
+
+  return `
+    @font-face {
+      font-family: 'Inter';
+      src: url('${fontUrl}') format('truetype');
+      font-weight: 100 900;
+      font-display: swap;
+    }
+  `;
+}
+
 function ensureStyles(): void {
   if (document.getElementById(STYLE_ID)) {
     return;
@@ -17,7 +30,7 @@ function ensureStyles(): void {
 
   const style = document.createElement('style');
   style.id = STYLE_ID;
-  style.textContent = readerStyles;
+  style.textContent = buildFontFace() + readerStyles;
   document.head.appendChild(style);
 }
 

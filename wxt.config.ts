@@ -9,5 +9,11 @@ export default defineConfig({
     action: {
       default_title: 'Enter Zen Mode',
     },
+    web_accessible_resources: [
+      {
+        resources: ['fonts/*'],
+        matches: ['<all_urls>'],
+      },
+    ],
   },
 });
