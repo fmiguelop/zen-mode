@@ -1,6 +1,10 @@
+import { ensureReaderStyles } from './reader-overlay';
+
 const TOAST_CLASS = 'still-toast';
 
 export function showToast(message: string, duration = 3000): void {
+  ensureReaderStyles();
+
   document.querySelector(`.${TOAST_CLASS}`)?.remove();
 
   const toast = document.createElement('div');

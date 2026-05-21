@@ -2,13 +2,17 @@
 
 **Quiet reading for the open web.**
 
-Still is a Chrome extension that strips any web page down to clean, distraction-free article text — one click, no settings, no account.
+Still is a Chrome extension that strips any web page down to clean, distraction-free article text — one click, no account, no setup.
 
 ## How it works
 
-1. Click the **Still** icon in your toolbar
+1. Click the **Still** icon in your toolbar (or press **Alt+Shift+S** / **Option+Shift+S** on Mac)
 2. The page transforms into a calm reader overlay
 3. Press **Esc** or click **Exit Still** to return
+
+While reading: **+** / **−** adjust text size; a progress bar and estimated reading time appear in the header; **View original** opens the source page.
+
+Optional preferences (light/dark/warm theme, text size, column width) live in **Options** — right-click the extension icon → Options, or open from `chrome://extensions`.
 
 Article extraction runs locally in your browser using [Mozilla Readability](https://github.com/mozilla/readability). Nothing is sent to external servers.
 
@@ -30,12 +34,18 @@ Load unpacked in Chrome: `chrome://extensions` → Developer mode → Load unpac
 
 ```
 entrypoints/
-  background.ts     Toolbar click handler
+  background.ts     Toolbar click + keyboard shortcut
   content.ts        Reader mode toggle
+  options.html      Extension options (reading prefs)
 utils/
-  extract-article.ts  Readability wrapper
-  reader-overlay.ts   Full-screen reader UI
-  toast.ts            Error notifications
+  extract-article.ts       Readability wrapper
+  preferences.ts           Reading prefs (sync)
+  sanitize-article-html.ts Strip inline styles from extracted HTML
+  reading-time.ts          Reading time estimate
+  scroll-restore.ts        Session scroll restore per URL
+  options-page.ts          Options page logic
+  reader-overlay.ts        Full-screen reader UI
+  toast.ts                 Error notifications
 assets/
   reader.css          Reader overlay styles
 public/
@@ -59,6 +69,8 @@ docs/
 | Border | `#E0E0DB` | Dividers |
 | Sage | `#5C7A6B` | Links, focus ring |
 | Stone | `#8A8478` | Secondary accent |
+
+**Reader themes** (Options): Light (default), Dark (`#121212` / `#D8D8D8`), Warm (`#F4F0E6`). Text size and column width presets available.
 
 ### Icon
 

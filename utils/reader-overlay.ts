@@ -1,5 +1,14 @@
 import readerStyles from '~/assets/reader.css?inline';
 import type { ExtractedArticle } from './extract-article';
+import {
+  bumpFontSize,
+  getPreferences,
+  setPreferences,
+  type StillPreferences,
+} from './preferences';
+import { formatReadingTime } from './reading-time';
+import { restoreScrollPosition, saveScrollPosition } from './scroll-restore';
+import { sanitizeArticleHtml } from './sanitize-article-html';
 
 const OVERLAY_ID = 'still-overlay';
 const STYLE_ID = 'still-styles';
@@ -22,7 +31,7 @@ function buildFontFace(): string {
   `;
 }
 
-function ensureStyles(): void {
+export function ensureReaderStyles(): void {
   if (document.getElementById(STYLE_ID)) {
     return;
   }
@@ -33,26 +42,84 @@ function ensureStyles(): void {
   document.head.appendChild(style);
 }
 
-function buildByline(article: ExtractedArticle): string | null {
+function applyPreferencesToElement(overlay: HTMLElement, prefs: StillPreferences): void {
+  overlay.dataset.theme = prefs.theme;
+  overlay.dataset.fontSize = prefs.fontSize;
+  overlay.dataset.columnWidth = prefs.columnWidth;
+}
+
+export function applyPreferencesToOverlay(prefs: StillPreferences): void {
+  const overlay = getActiveOverlay();
+
+  if (overlay) {
+    applyPreferencesToElement(overlay, prefs);
+  }
+}
+
+/** @deprecated Use applyPreferencesToOverlay */
+export function applyThemeToOverlay(theme: StillPreferences['theme']): void {
+  void getPreferences().then((prefs) => {
+    applyPreferencesToOverlay({ ...prefs, theme });
+  });
+}
+
+function buildByline(article: ExtractedArticle, readingTime: string): string | null {
+  const parts: string[] = [];
+
   if (article.byline && article.siteName) {
-    return `${article.byline} · ${article.siteName}`;
+    parts.push(`${article.byline} · ${article.siteName}`);
+  } else if (article.byline) {
+    parts.push(article.byline);
+  } else if (article.siteName) {
+    parts.push(article.siteName);
   }
 
-  return article.byline ?? article.siteName;
+  if (readingTime) {
+    parts.push(readingTime);
+  }
+
+  return parts.length > 0 ? parts.join(' · ') : null;
+}
+
+function updateProgress(overlay: HTMLElement, progressBar: HTMLElement): void {
+  const maxScroll = overlay.scrollHeight - overlay.clientHeight;
+  const ratio = maxScroll > 0 ? overlay.scrollTop / maxScroll : 0;
+  progressBar.style.transform = `scaleX(${ratio})`;
 }
 
 export function createReaderOverlay(
   article: ExtractedArticle,
   onExit: () => void,
+  prefs: StillPreferences,
 ): ReaderOverlayHandle {
-  ensureStyles();
+  ensureReaderStyles();
+
+  const pageUrl = window.location.href;
+  const sanitizedContent = sanitizeArticleHtml(article.content);
+  const plainText = new DOMParser().parseFromString(sanitizedContent, 'text/html').body.textContent ?? '';
+  const readingTime = formatReadingTime(plainText);
 
   const overlay = document.createElement('div');
   overlay.id = OVERLAY_ID;
   overlay.className = 'still-overlay';
+  applyPreferencesToElement(overlay, prefs);
+
+  const lang = document.documentElement.lang;
+  if (lang) {
+    overlay.setAttribute('lang', lang);
+  }
+
   overlay.setAttribute('role', 'dialog');
   overlay.setAttribute('aria-modal', 'true');
   overlay.setAttribute('aria-label', 'Still reader');
+
+  const progress = document.createElement('div');
+  progress.className = 'still-progress';
+  progress.setAttribute('aria-hidden', 'true');
+  const progressBar = document.createElement('div');
+  progressBar.className = 'still-progress__bar';
+  progress.appendChild(progressBar);
+  overlay.appendChild(progress);
 
   const reader = document.createElement('div');
   reader.className = 'still-reader';
@@ -65,7 +132,7 @@ export function createReaderOverlay(
   title.textContent = article.title;
   header.appendChild(title);
 
-  const bylineText = buildByline(article);
+  const bylineText = buildByline(article, readingTime);
   if (bylineText) {
     const byline = document.createElement('p');
     byline.className = 'still-byline';
@@ -75,13 +142,24 @@ export function createReaderOverlay(
 
   const content = document.createElement('article');
   content.className = 'still-content';
-  content.innerHTML = article.content;
+  content.innerHTML = sanitizedContent;
 
   const footer = document.createElement('footer');
   footer.className = 'still-footer';
 
   const exitHint = document.createElement('span');
-  exitHint.textContent = 'Press Esc to exit';
+  exitHint.className = 'still-footer-hint';
+  exitHint.textContent = 'Press Esc to exit · + − to adjust text size';
+
+  const footerActions = document.createElement('div');
+  footerActions.className = 'still-footer-actions';
+
+  const originalLink = document.createElement('a');
+  originalLink.className = 'still-original-link';
+  originalLink.href = pageUrl;
+  originalLink.target = '_blank';
+  originalLink.rel = 'noopener noreferrer';
+  originalLink.textContent = 'View original';
 
   const exitButton = document.createElement('button');
   exitButton.type = 'button';
@@ -89,8 +167,10 @@ export function createReaderOverlay(
   exitButton.textContent = 'Exit Still';
   exitButton.addEventListener('click', onExit);
 
+  footerActions.appendChild(originalLink);
+  footerActions.appendChild(exitButton);
   footer.appendChild(exitHint);
-  footer.appendChild(exitButton);
+  footer.appendChild(footerActions);
 
   reader.appendChild(header);
   reader.appendChild(content);
@@ -99,18 +179,51 @@ export function createReaderOverlay(
   document.body.appendChild(overlay);
   document.body.classList.add('still-active');
 
+  const handleScroll = (): void => updateProgress(overlay, progressBar);
+  overlay.addEventListener('scroll', handleScroll, { passive: true });
+  requestAnimationFrame(handleScroll);
+
+  restoreScrollPosition(overlay, pageUrl);
+
   const handleKeyDown = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') {
       event.preventDefault();
       onExit();
+      return;
+    }
+
+    if (event.key === '+' || event.key === '=') {
+      event.preventDefault();
+      void adjustFontSize(1);
+      return;
+    }
+
+    if (event.key === '-') {
+      event.preventDefault();
+      void adjustFontSize(-1);
     }
   };
+
+  async function adjustFontSize(direction: 1 | -1): Promise<void> {
+    const current = await getPreferences();
+    const nextSize = bumpFontSize(current.fontSize, direction);
+
+    if (nextSize === current.fontSize) {
+      return;
+    }
+
+    const next = { ...current, fontSize: nextSize };
+    await setPreferences({ fontSize: nextSize });
+    applyPreferencesToOverlay(next);
+  }
 
   document.addEventListener('keydown', handleKeyDown);
 
   return {
     overlay,
     destroy: () => {
+      saveScrollPosition(pageUrl, overlay.scrollTop);
+      overlay.removeEventListener('scroll', handleScroll);
       document.removeEventListener('keydown', handleKeyDown);
       overlay.remove();
       document.body.classList.remove('still-active');
