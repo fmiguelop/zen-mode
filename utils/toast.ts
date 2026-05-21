@@ -1,4 +1,4 @@
-const TOAST_CLASS = 'zen-mode-toast';
+const TOAST_CLASS = 'still-toast';
 
 export function showToast(message: string, duration = 3000): void {
   document.querySelector(`.${TOAST_CLASS}`)?.remove();

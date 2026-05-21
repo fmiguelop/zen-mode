@@ -1,4 +1,4 @@
-const ENTER_ZEN_MESSAGE = { type: 'ENTER_ZEN' } as const;
+const ENTER_STILL_MESSAGE = { type: 'ENTER_STILL' } as const;
 
 export default defineBackground(() => {
   browser.action.onClicked.addListener(async (tab) => {
@@ -7,14 +7,14 @@ export default defineBackground(() => {
     }
 
     try {
-      await browser.tabs.sendMessage(tab.id, ENTER_ZEN_MESSAGE);
+      await browser.tabs.sendMessage(tab.id, ENTER_STILL_MESSAGE);
     } catch {
       try {
         await browser.scripting.executeScript({
           target: { tabId: tab.id },
           files: ['/content-scripts/content.js'],
         });
-        await browser.tabs.sendMessage(tab.id, ENTER_ZEN_MESSAGE);
+        await browser.tabs.sendMessage(tab.id, ENTER_STILL_MESSAGE);
       } catch {
         // Restricted pages (chrome://, Web Store, PDFs, etc.)
       }

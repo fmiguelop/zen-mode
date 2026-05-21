@@ -1,8 +1,8 @@
 import readerStyles from '~/assets/reader.css?inline';
 import type { ExtractedArticle } from './extract-article';
 
-const OVERLAY_ID = 'zen-mode-overlay';
-const STYLE_ID = 'zen-mode-styles';
+const OVERLAY_ID = 'still-overlay';
+const STYLE_ID = 'still-styles';
 
 export interface ReaderOverlayHandle {
   overlay: HTMLElement;
@@ -49,44 +49,44 @@ export function createReaderOverlay(
 
   const overlay = document.createElement('div');
   overlay.id = OVERLAY_ID;
-  overlay.className = 'zen-mode-overlay';
+  overlay.className = 'still-overlay';
   overlay.setAttribute('role', 'dialog');
   overlay.setAttribute('aria-modal', 'true');
-  overlay.setAttribute('aria-label', 'Zen Mode reader');
+  overlay.setAttribute('aria-label', 'Still reader');
 
   const reader = document.createElement('div');
-  reader.className = 'zen-mode-reader';
+  reader.className = 'still-reader';
 
   const header = document.createElement('header');
-  header.className = 'zen-mode-header';
+  header.className = 'still-header';
 
   const title = document.createElement('h1');
-  title.className = 'zen-mode-title';
+  title.className = 'still-title';
   title.textContent = article.title;
   header.appendChild(title);
 
   const bylineText = buildByline(article);
   if (bylineText) {
     const byline = document.createElement('p');
-    byline.className = 'zen-mode-byline';
+    byline.className = 'still-byline';
     byline.textContent = bylineText;
     header.appendChild(byline);
   }
 
   const content = document.createElement('article');
-  content.className = 'zen-mode-content';
+  content.className = 'still-content';
   content.innerHTML = article.content;
 
   const footer = document.createElement('footer');
-  footer.className = 'zen-mode-footer';
+  footer.className = 'still-footer';
 
   const exitHint = document.createElement('span');
   exitHint.textContent = 'Press Esc to exit';
 
   const exitButton = document.createElement('button');
   exitButton.type = 'button';
-  exitButton.className = 'zen-mode-exit-btn';
-  exitButton.textContent = 'Exit zen mode';
+  exitButton.className = 'still-exit-btn';
+  exitButton.textContent = 'Exit Still';
   exitButton.addEventListener('click', onExit);
 
   footer.appendChild(exitHint);
@@ -97,7 +97,7 @@ export function createReaderOverlay(
   reader.appendChild(footer);
   overlay.appendChild(reader);
   document.body.appendChild(overlay);
-  document.body.classList.add('zen-mode-active');
+  document.body.classList.add('still-active');
 
   const handleKeyDown = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') {
@@ -113,7 +113,7 @@ export function createReaderOverlay(
     destroy: () => {
       document.removeEventListener('keydown', handleKeyDown);
       overlay.remove();
-      document.body.classList.remove('zen-mode-active');
+      document.body.classList.remove('still-active');
 
       if (!document.getElementById(OVERLAY_ID)) {
         document.getElementById(STYLE_ID)?.remove();

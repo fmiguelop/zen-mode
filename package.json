@@ -1,6 +1,6 @@
 {
-  "name": "zen-mode",
-  "description": "Strip distractions and focus on the article content.",
+  "name": "still",
+  "description": "Quiet reading for the open web.",
   "private": true,
   "version": "0.1.0",
   "type": "module",

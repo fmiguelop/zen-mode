@@ -2,12 +2,12 @@ import { defineConfig } from 'wxt';
 
 export default defineConfig({
   manifest: {
-    name: 'Zen Mode',
-    description: 'Strip distractions and focus on the article content.',
+    name: 'Still',
+    description: 'Quiet reading for the open web.',
     permissions: ['activeTab', 'scripting'],
     host_permissions: ['<all_urls>'],
     action: {
-      default_title: 'Enter Zen Mode',
+      default_title: 'Read with Still',
     },
     web_accessible_resources: [
       {

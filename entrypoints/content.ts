@@ -4,14 +4,14 @@ import { showToast } from '~/utils/toast';
 
 let activeReader: ReaderOverlayHandle | null = null;
 
-function exitZenMode(): void {
+function exitStill(): void {
   activeReader?.destroy();
   activeReader = null;
 }
 
-function enterZenMode(): void {
+function enterStill(): void {
   if (getActiveOverlay()) {
-    exitZenMode();
+    exitStill();
     return;
   }
 
@@ -22,7 +22,7 @@ function enterZenMode(): void {
     return;
   }
 
-  activeReader = createReaderOverlay(article, exitZenMode);
+  activeReader = createReaderOverlay(article, exitStill);
 }
 
 export default defineContentScript({
@@ -30,8 +30,8 @@ export default defineContentScript({
   runAt: 'document_idle',
   main() {
     browser.runtime.onMessage.addListener((message) => {
-      if (message?.type === 'ENTER_ZEN') {
-        enterZenMode();
+      if (message?.type === 'ENTER_STILL') {
+        enterStill();
       }
     });
   },
