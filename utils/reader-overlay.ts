@@ -11,7 +11,7 @@ import { restoreScrollPosition, saveScrollPosition } from './scroll-restore';
 import { sanitizeArticleHtml } from './sanitize-article-html';
 
 const OVERLAY_ID = 'still-overlay';
-const STYLE_ID = 'still-styles';
+const GLOBAL_STYLE_ID = 'still-global-styles';
 
 export interface ReaderOverlayHandle {
   overlay: HTMLElement;
@@ -31,15 +31,21 @@ function buildFontFace(): string {
   `;
 }
 
-export function ensureReaderStyles(): void {
-  if (document.getElementById(STYLE_ID)) {
+function ensureGlobalStyles(): void {
+  if (document.getElementById(GLOBAL_STYLE_ID)) {
     return;
   }
 
   const style = document.createElement('style');
-  style.id = STYLE_ID;
-  style.textContent = buildFontFace() + readerStyles;
+  style.id = GLOBAL_STYLE_ID;
+  style.textContent = 'body.still-active { overflow: hidden; }';
   document.head.appendChild(style);
+}
+
+function injectShadowStyles(shadow: ShadowRoot): void {
+  const style = document.createElement('style');
+  style.textContent = buildFontFace() + readerStyles;
+  shadow.appendChild(style);
 }
 
 function applyPreferencesToElement(overlay: HTMLElement, prefs: StillPreferences): void {
@@ -92,7 +98,7 @@ export function createReaderOverlay(
   onExit: () => void,
   prefs: StillPreferences,
 ): ReaderOverlayHandle {
-  ensureReaderStyles();
+  ensureGlobalStyles();
 
   const pageUrl = window.location.href;
   const sanitizedContent = sanitizeArticleHtml(article.content);
@@ -101,7 +107,6 @@ export function createReaderOverlay(
 
   const overlay = document.createElement('div');
   overlay.id = OVERLAY_ID;
-  overlay.className = 'still-overlay';
   applyPreferencesToElement(overlay, prefs);
 
   const lang = document.documentElement.lang;
@@ -113,13 +118,16 @@ export function createReaderOverlay(
   overlay.setAttribute('aria-modal', 'true');
   overlay.setAttribute('aria-label', 'Still reader');
 
+  const shadow = overlay.attachShadow({ mode: 'open' });
+  injectShadowStyles(shadow);
+
   const progress = document.createElement('div');
   progress.className = 'still-progress';
   progress.setAttribute('aria-hidden', 'true');
   const progressBar = document.createElement('div');
   progressBar.className = 'still-progress__bar';
   progress.appendChild(progressBar);
-  overlay.appendChild(progress);
+  shadow.appendChild(progress);
 
   const reader = document.createElement('div');
   reader.className = 'still-reader';
@@ -175,7 +183,7 @@ export function createReaderOverlay(
   reader.appendChild(header);
   reader.appendChild(content);
   reader.appendChild(footer);
-  overlay.appendChild(reader);
+  shadow.appendChild(reader);
   document.body.appendChild(overlay);
   document.body.classList.add('still-active');
 
@@ -227,10 +235,6 @@ export function createReaderOverlay(
       document.removeEventListener('keydown', handleKeyDown);
       overlay.remove();
       document.body.classList.remove('still-active');
-
-      if (!document.getElementById(OVERLAY_ID)) {
-        document.getElementById(STYLE_ID)?.remove();
-      }
     },
   };
 }

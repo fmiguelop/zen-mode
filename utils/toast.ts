@@ -1,9 +1,21 @@
-import { ensureReaderStyles } from './reader-overlay';
+import toastStyles from '~/assets/toast.css?inline';
 
 const TOAST_CLASS = 'still-toast';
+const TOAST_STYLE_ID = 'still-toast-styles';
+
+function ensureToastStyles(): void {
+  if (document.getElementById(TOAST_STYLE_ID)) {
+    return;
+  }
+
+  const style = document.createElement('style');
+  style.id = TOAST_STYLE_ID;
+  style.textContent = toastStyles;
+  document.head.appendChild(style);
+}
 
 export function showToast(message: string, duration = 3000): void {
-  ensureReaderStyles();
+  ensureToastStyles();
 
   document.querySelector(`.${TOAST_CLASS}`)?.remove();
 

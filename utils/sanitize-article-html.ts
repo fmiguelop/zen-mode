@@ -15,6 +15,7 @@ const ALLOWED_TAGS = [
   'figure',
   'figcaption',
   'picture',
+  'source',
   'blockquote',
   'pre',
   'code',
@@ -52,6 +53,8 @@ const ALLOWED_ATTR = [
   'href',
   'title',
   'src',
+  'srcset',
+  'sizes',
   'alt',
   'width',
   'height',
@@ -63,12 +66,27 @@ const ALLOWED_ATTR = [
   'reversed',
 ];
 
-const URL_ATTRS = new Set(['href', 'src']);
+const URL_ATTRS = new Set(['href', 'src', 'srcset']);
 
 const purify = DOMPurify(window);
 
 purify.addHook('uponSanitizeAttribute', (node, data) => {
   if (!URL_ATTRS.has(data.attrName)) {
+    return;
+  }
+
+  if (data.attrName === 'srcset') {
+    const entries = data.attrValue.split(',');
+    const valid = entries.every((entry) => {
+      const url = entry.trim().split(/\s+/)[0];
+      return !url || isAllowedUrl(url);
+    });
+
+    if (!valid) {
+      data.keepAttr = false;
+      data.attrValue = '';
+    }
+
     return;
   }
 

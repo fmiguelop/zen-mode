@@ -82,4 +82,41 @@ describe('sanitizeArticleHtml', () => {
     const anchor = sanitizeArticleHtml('<a href="#section">anchor</a>');
     expect(anchor).toContain('href="#section"');
   });
+
+  it('strips class and style attributes', () => {
+    const result = sanitizeArticleHtml(
+      '<p class="article-body" style="font-size: 24px; max-width: 600px">text</p>',
+    );
+    expect(result).not.toContain('class=');
+    expect(result).not.toContain('style=');
+    expect(result).toContain('text');
+  });
+
+  it('preserves responsive image attributes', () => {
+    const result = sanitizeArticleHtml(
+      '<img src="https://example.com/a.jpg" srcset="https://example.com/a-2x.jpg 2x" sizes="(max-width: 600px) 100vw, 600px" alt="photo">',
+    );
+    expect(result).toContain('src="https://example.com/a.jpg"');
+    expect(result).toContain('srcset="https://example.com/a-2x.jpg 2x"');
+    expect(result).toContain('sizes="(max-width: 600px) 100vw, 600px"');
+    expect(result).toContain('alt="photo"');
+  });
+
+  it('preserves picture sources with srcset', () => {
+    const result = sanitizeArticleHtml(
+      '<picture><source srcset="https://example.com/a.webp" type="image/webp"><img src="https://example.com/a.jpg" alt="photo"></picture>',
+    );
+    expect(result).toContain('<picture>');
+    expect(result).toContain('<source');
+    expect(result).toContain('srcset="https://example.com/a.webp"');
+    expect(result).toContain('src="https://example.com/a.jpg"');
+  });
+
+  it('rejects dangerous srcset URLs', () => {
+    const result = sanitizeArticleHtml(
+      '<img src="https://example.com/a.jpg" srcset="javascript:alert(1) 1x" alt="photo">',
+    );
+    expect(result).not.toContain('javascript:');
+    expect(result).not.toContain('srcset=');
+  });
 });
