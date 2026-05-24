@@ -1,6 +1,6 @@
 # Privacy Policy — Still
 
-**Last updated:** May 21, 2026
+**Last updated:** May 24, 2026
 
 Still ("the Extension") is a browser extension that provides a distraction-free reader mode for web articles. This policy explains what data the Extension accesses and how it is handled.
 
