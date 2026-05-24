@@ -3,7 +3,7 @@ import { defineConfig } from 'wxt';
 export default defineConfig({
   manifest: {
     name: 'Still',
-    description: 'Quiet reading for the open web.',
+    description: 'One click turns any article into calm, distraction-free reading. No account. No tracking. Everything stays on your device.',
     permissions: ['activeTab', 'scripting', 'storage'],
     commands: {
       'toggle-still': {

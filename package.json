@@ -1,8 +1,8 @@
 {
   "name": "still",
-  "description": "Quiet reading for the open web.",
+  "description": "One click turns any article into calm, distraction-free reading. No account. No tracking. Everything stays on your device.",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "scripts": {
     "dev": "wxt",
