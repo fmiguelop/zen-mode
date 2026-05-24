@@ -12,13 +12,18 @@
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "@mozilla/readability": "^0.6.0"
+    "@mozilla/readability": "^0.6.0",
+    "dompurify": "^3.2.6"
   },
   "devDependencies": {
+    "happy-dom": "^17.4.4",
     "typescript": "^5.9.3",
+    "vitest": "^3.1.1",
     "wxt": "^0.20.26"
   }
 }
