@@ -93,6 +93,19 @@ function updateProgress(overlay: HTMLElement, progressBar: HTMLElement): void {
   progressBar.style.transform = `scaleX(${ratio})`;
 }
 
+function wrapTables(container: HTMLElement): void {
+  for (const table of container.querySelectorAll('table')) {
+    if (table.parentElement?.classList.contains('still-table-wrap')) {
+      continue;
+    }
+
+    const wrap = document.createElement('div');
+    wrap.className = 'still-table-wrap';
+    table.parentNode?.insertBefore(wrap, table);
+    wrap.appendChild(table);
+  }
+}
+
 export function createReaderOverlay(
   article: ExtractedArticle,
   onExit: () => void,
@@ -151,6 +164,7 @@ export function createReaderOverlay(
   const content = document.createElement('article');
   content.className = 'still-content';
   content.innerHTML = sanitizedContent;
+  wrapTables(content);
 
   const footer = document.createElement('footer');
   footer.className = 'still-footer';

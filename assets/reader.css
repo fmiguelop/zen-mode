@@ -247,16 +247,33 @@
   border-radius: 0;
 }
 
-.still-content table {
-  display: block;
-  width: 100%;
-  margin: 1.5rem 0;
-  border-collapse: collapse;
+.still-table-wrap {
   overflow-x: auto;
+  max-width: 100%;
+  margin: 1.5rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.still-content table {
+  display: table;
+  border-collapse: collapse;
+  width: max-content;
+  min-width: 100%;
+}
+
+.still-content thead,
+.still-content tbody,
+.still-content tfoot {
+  display: table-row-group;
+}
+
+.still-content tr {
+  display: table-row;
 }
 
 .still-content th,
 .still-content td {
+  display: table-cell;
   border: 1px solid var(--still-border);
   padding: 0.5rem 0.75rem;
   text-align: left;
