@@ -12,6 +12,9 @@ import { sanitizeArticleHtml } from './sanitize-article-html';
 
 const OVERLAY_ID = 'still-overlay';
 const GLOBAL_STYLE_ID = 'still-global-styles';
+const SCROLLPORT_CLASS = 'still-scrollport';
+
+let lockedPageScrollY: number | null = null;
 
 export interface ReaderOverlayHandle {
   overlay: HTMLElement;
@@ -38,8 +41,38 @@ function ensureGlobalStyles(): void {
 
   const style = document.createElement('style');
   style.id = GLOBAL_STYLE_ID;
-  style.textContent = 'body.still-active { overflow: hidden; }';
+  style.textContent = `
+    html.still-active,
+    body.still-active {
+      overflow: hidden !important;
+      overscroll-behavior: none;
+    }
+  `;
   document.head.appendChild(style);
+}
+
+function lockPageScroll(): void {
+  lockedPageScrollY = window.scrollY;
+  document.documentElement.classList.add('still-active');
+  document.body.classList.add('still-active');
+  document.body.style.setProperty('position', 'fixed', 'important');
+  document.body.style.setProperty('top', `-${lockedPageScrollY}px`, 'important');
+  document.body.style.setProperty('left', '0', 'important');
+  document.body.style.setProperty('right', '0', 'important');
+  document.body.style.setProperty('width', '100%', 'important');
+}
+
+function unlockPageScroll(): void {
+  const scrollY = lockedPageScrollY ?? 0;
+  lockedPageScrollY = null;
+  document.documentElement.classList.remove('still-active');
+  document.body.classList.remove('still-active');
+  document.body.style.removeProperty('position');
+  document.body.style.removeProperty('top');
+  document.body.style.removeProperty('left');
+  document.body.style.removeProperty('right');
+  document.body.style.removeProperty('width');
+  window.scrollTo(0, scrollY);
 }
 
 function injectShadowStyles(shadow: ShadowRoot): void {
@@ -48,17 +81,34 @@ function injectShadowStyles(shadow: ShadowRoot): void {
   shadow.appendChild(style);
 }
 
-function applyPreferencesToElement(overlay: HTMLElement, prefs: StillPreferences): void {
-  overlay.dataset.theme = prefs.theme;
-  overlay.dataset.fontSize = prefs.fontSize;
-  overlay.dataset.columnWidth = prefs.columnWidth;
+function getStillRoot(overlay: HTMLElement): HTMLElement | null {
+  return overlay.shadowRoot?.querySelector('.still-root') ?? null;
+}
+
+function applyPreferencesToElement(root: HTMLElement, prefs: StillPreferences): void {
+  root.dataset.theme = prefs.theme;
+  root.dataset.fontSize = prefs.fontSize;
+  root.dataset.columnWidth = prefs.columnWidth;
+}
+
+function applyHostLayoutStyles(overlay: HTMLElement): void {
+  overlay.style.setProperty('position', 'fixed', 'important');
+  overlay.style.setProperty('inset', '0', 'important');
+  overlay.style.setProperty('z-index', '2147483647', 'important');
+  overlay.style.setProperty('display', 'block', 'important');
+  overlay.style.setProperty('overflow', 'hidden', 'important');
+  overlay.style.setProperty('margin', '0', 'important');
+  overlay.style.setProperty('padding', '0', 'important');
+  overlay.style.setProperty('border', 'none', 'important');
+  overlay.style.setProperty('box-sizing', 'border-box', 'important');
 }
 
 export function applyPreferencesToOverlay(prefs: StillPreferences): void {
   const overlay = getActiveOverlay();
+  const root = overlay ? getStillRoot(overlay) : null;
 
-  if (overlay) {
-    applyPreferencesToElement(overlay, prefs);
+  if (root) {
+    applyPreferencesToElement(root, prefs);
   }
 }
 
@@ -120,7 +170,7 @@ export function createReaderOverlay(
 
   const overlay = document.createElement('div');
   overlay.id = OVERLAY_ID;
-  applyPreferencesToElement(overlay, prefs);
+  applyHostLayoutStyles(overlay);
 
   const lang = document.documentElement.lang;
   if (lang) {
@@ -134,13 +184,21 @@ export function createReaderOverlay(
   const shadow = overlay.attachShadow({ mode: 'open' });
   injectShadowStyles(shadow);
 
+  const root = document.createElement('div');
+  root.className = 'still-root';
+  applyPreferencesToElement(root, prefs);
+
+  const scrim = document.createElement('div');
+  scrim.className = 'still-scrim';
+  scrim.setAttribute('aria-hidden', 'true');
+  root.appendChild(scrim);
+
   const progress = document.createElement('div');
   progress.className = 'still-progress';
   progress.setAttribute('aria-hidden', 'true');
   const progressBar = document.createElement('div');
   progressBar.className = 'still-progress__bar';
   progress.appendChild(progressBar);
-  shadow.appendChild(progress);
 
   const reader = document.createElement('div');
   reader.className = 'still-reader';
@@ -197,15 +255,22 @@ export function createReaderOverlay(
   reader.appendChild(header);
   reader.appendChild(content);
   reader.appendChild(footer);
-  shadow.appendChild(reader);
-  document.body.appendChild(overlay);
-  document.body.classList.add('still-active');
+  root.appendChild(reader);
 
-  const handleScroll = (): void => updateProgress(overlay, progressBar);
-  overlay.addEventListener('scroll', handleScroll, { passive: true });
+  const scrollport = document.createElement('div');
+  scrollport.className = SCROLLPORT_CLASS;
+  scrollport.appendChild(root);
+
+  shadow.appendChild(progress);
+  shadow.appendChild(scrollport);
+  document.body.appendChild(overlay);
+  lockPageScroll();
+
+  const handleScroll = (): void => updateProgress(scrollport, progressBar);
+  scrollport.addEventListener('scroll', handleScroll, { passive: true });
   requestAnimationFrame(handleScroll);
 
-  restoreScrollPosition(overlay, pageUrl);
+  restoreScrollPosition(scrollport, pageUrl);
 
   const handleKeyDown = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') {
@@ -244,11 +309,11 @@ export function createReaderOverlay(
   return {
     overlay,
     destroy: () => {
-      saveScrollPosition(pageUrl, overlay.scrollTop);
-      overlay.removeEventListener('scroll', handleScroll);
+      saveScrollPosition(pageUrl, scrollport.scrollTop);
+      scrollport.removeEventListener('scroll', handleScroll);
       document.removeEventListener('keydown', handleKeyDown);
       overlay.remove();
-      document.body.classList.remove('still-active');
+      unlockPageScroll();
     },
   };
 }
