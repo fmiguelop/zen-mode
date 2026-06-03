@@ -1,4 +1,6 @@
-export type Theme = 'light' | 'dark' | 'warm';
+export type Theme = 'light' | 'dark' | 'warm' | 'system';
+export type EffectiveTheme = Exclude<Theme, 'system'>;
+export type HighContrastMode = 'system' | 'on' | 'off';
 export type FontSize = 'small' | 'medium' | 'large' | 'xlarge';
 export type ColumnWidth = 'narrow' | 'default' | 'wide';
 export type LineHeight = 'compact' | 'default' | 'relaxed';
@@ -12,13 +14,14 @@ export interface StillPreferences {
   hideImages: boolean;
   reduceMotion: boolean;
   dockAlwaysVisible: boolean;
+  highContrast: HighContrastMode;
 }
 
 const STORAGE_KEY = 'stillPreferences';
 const LEGACY_THEME_KEY = 'theme';
 
 export const DEFAULT_PREFERENCES: StillPreferences = {
-  theme: 'light',
+  theme: 'system',
   fontSize: 'medium',
   columnWidth: 'default',
   lineHeight: 'default',
@@ -26,12 +29,38 @@ export const DEFAULT_PREFERENCES: StillPreferences = {
   hideImages: false,
   reduceMotion: false,
   dockAlwaysVisible: false,
+  highContrast: 'system',
 };
 
 const FONT_SIZE_ORDER: FontSize[] = ['small', 'medium', 'large', 'xlarge'];
 
 function isTheme(value: unknown): value is Theme {
-  return value === 'light' || value === 'dark' || value === 'warm';
+  return (
+    value === 'light' ||
+    value === 'dark' ||
+    value === 'warm' ||
+    value === 'system'
+  );
+}
+
+function isHighContrastMode(value: unknown): value is HighContrastMode {
+  return value === 'system' || value === 'on' || value === 'off';
+}
+
+function normalizeHighContrast(value: unknown): HighContrastMode {
+  if (isHighContrastMode(value)) {
+    return value;
+  }
+
+  if (value === true) {
+    return 'on';
+  }
+
+  if (value === false) {
+    return 'off';
+  }
+
+  return 'off';
 }
 
 function isFontSize(value: unknown): value is FontSize {
@@ -79,6 +108,7 @@ function normalizePreferences(raw: unknown, legacyTheme?: unknown): StillPrefere
       prefs.dockAlwaysVisible,
       DEFAULT_PREFERENCES.dockAlwaysVisible,
     ),
+    highContrast: normalizeHighContrast(prefs.highContrast),
   };
 }
 

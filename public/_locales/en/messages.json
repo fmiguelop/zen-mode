@@ -35,6 +35,9 @@
   "themeDark": {
     "message": "Dark"
   },
+  "themeSystem": {
+    "message": "System"
+  },
   "lineHeightCompact": {
     "message": "Compact"
   },
@@ -95,6 +98,24 @@
   "optionsAccessibility": {
     "message": "Accessibility"
   },
+  "prefHighContrast": {
+    "message": "High contrast"
+  },
+  "prefHighContrastSystem": {
+    "message": "System"
+  },
+  "prefHighContrastOn": {
+    "message": "On"
+  },
+  "prefHighContrastOff": {
+    "message": "Off"
+  },
+  "optionsSystemAppearanceHint": {
+    "message": "Theme “System” follows your device appearance (light or dark)."
+  },
+  "optionsSystemContrastHint": {
+    "message": "High contrast “System” follows your device increase-contrast setting."
+  },
   "prefUnderlineLinks": {
     "message": "Always underline links"
   },
@@ -136,6 +157,18 @@
   },
   "ariaThemeDark": {
     "message": "Theme: Dark"
+  },
+  "ariaThemeSystem": {
+    "message": "Theme: System"
+  },
+  "ariaHighContrastSystem": {
+    "message": "High contrast: System"
+  },
+  "ariaHighContrastOn": {
+    "message": "High contrast: On"
+  },
+  "ariaHighContrastOff": {
+    "message": "High contrast: Off"
   },
   "ariaFontSizeSmall": {
     "message": "Text size: Small"

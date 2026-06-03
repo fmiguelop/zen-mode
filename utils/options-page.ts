@@ -3,14 +3,23 @@ import {
   setPreferences,
   type ColumnWidth,
   type FontSize,
+  type HighContrastMode,
   type LineHeight,
   type StillPreferences,
   type Theme,
 } from '~/utils/preferences';
+import {
+  followsSystemPreferences,
+  subscribeSystemPreferenceChanges,
+} from '~/utils/resolve-effective-preferences';
 import { getUiLanguage, t, type MessageKey } from '~/utils/i18n';
 
-type SegmentField = 'theme' | 'fontSize' | 'columnWidth' | 'lineHeight';
-type BooleanPrefField = 'underlineLinks' | 'hideImages' | 'reduceMotion' | 'dockAlwaysVisible';
+type SegmentField = 'theme' | 'fontSize' | 'columnWidth' | 'lineHeight' | 'highContrast';
+type BooleanPrefField =
+  | 'underlineLinks'
+  | 'hideImages'
+  | 'reduceMotion'
+  | 'dockAlwaysVisible';
 
 function applyStaticTranslations(): void {
   document.documentElement.lang = getUiLanguage();
@@ -65,6 +74,12 @@ function syncSegmentGroup(field: SegmentField, value: StillPreferences[SegmentFi
   }
 }
 
+function syncAllSegments(prefs: StillPreferences): void {
+  for (const field of ['theme', 'fontSize', 'columnWidth', 'lineHeight', 'highContrast'] as const) {
+    syncSegmentGroup(field, prefs[field]);
+  }
+}
+
 function syncBooleanPref(field: BooleanPrefField, value: boolean): void {
   const input = document.querySelector<HTMLInputElement>(`input[data-pref="${field}"]`);
   if (input) {
@@ -79,7 +94,12 @@ function bindSegmentGroup(field: SegmentField): void {
 
   for (const button of buttons) {
     button.addEventListener('click', async () => {
-      const value = button.dataset.value as Theme | FontSize | ColumnWidth | LineHeight;
+      const value = button.dataset.value as
+        | Theme
+        | FontSize
+        | ColumnWidth
+        | LineHeight
+        | HighContrastMode;
 
       syncSegmentGroup(field, value);
       await setPreferences({ [field]: value });
@@ -105,20 +125,28 @@ async function init(): Promise<void> {
 
   const prefs = await getPreferences();
 
-  for (const field of ['theme', 'fontSize', 'columnWidth', 'lineHeight'] as const) {
-    syncSegmentGroup(field, prefs[field]);
-  }
-
+  syncAllSegments(prefs);
   syncBooleanPref('underlineLinks', prefs.underlineLinks);
   syncBooleanPref('hideImages', prefs.hideImages);
   syncBooleanPref('reduceMotion', prefs.reduceMotion);
   syncBooleanPref('dockAlwaysVisible', prefs.dockAlwaysVisible);
+
+  subscribeSystemPreferenceChanges(() => {
+    void getPreferences().then((current) => {
+      if (!followsSystemPreferences(current)) {
+        return;
+      }
+
+      syncAllSegments(current);
+    });
+  });
 }
 
 bindSegmentGroup('theme');
 bindSegmentGroup('fontSize');
 bindSegmentGroup('columnWidth');
 bindSegmentGroup('lineHeight');
+bindSegmentGroup('highContrast');
 bindBooleanPrefs();
 
 void init();

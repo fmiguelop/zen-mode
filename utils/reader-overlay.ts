@@ -6,10 +6,16 @@ import {
   setPreferences,
   type ColumnWidth,
   type FontSize,
+  type HighContrastMode,
   type LineHeight,
   type StillPreferences,
   type Theme,
 } from './preferences';
+import {
+  followsSystemPreferences,
+  resolveEffectivePreferences,
+  subscribeSystemPreferenceChanges,
+} from './resolve-effective-preferences';
 import { t, type MessageKey } from './i18n';
 import { formatReadingTime } from './reading-time';
 import { restoreScrollPosition, saveScrollPosition } from './scroll-restore';
@@ -20,8 +26,12 @@ const GLOBAL_STYLE_ID = 'still-global-styles';
 const SCROLLPORT_CLASS = 'still-scrollport';
 const DOCK_HOVER_ZONE_PX = 60;
 
-type SegmentField = 'theme' | 'fontSize' | 'columnWidth' | 'lineHeight';
-type BooleanPrefField = 'underlineLinks' | 'hideImages' | 'reduceMotion' | 'dockAlwaysVisible';
+type SegmentField = 'theme' | 'fontSize' | 'columnWidth' | 'lineHeight' | 'highContrast';
+type BooleanPrefField =
+  | 'underlineLinks'
+  | 'hideImages'
+  | 'reduceMotion'
+  | 'dockAlwaysVisible';
 
 const PROGRESS_UPDATE_MIN_MS = 1000;
 const PROGRESS_UPDATE_MIN_DELTA = 5;
@@ -123,7 +133,9 @@ function applyHideImagesToContent(root: HTMLElement, hideImages: boolean): void 
 }
 
 function applyPreferencesToElement(root: HTMLElement, prefs: StillPreferences): void {
-  root.dataset.theme = prefs.theme;
+  const effective = resolveEffectivePreferences(prefs);
+
+  root.dataset.theme = effective.theme;
   root.dataset.fontSize = prefs.fontSize;
   root.dataset.columnWidth = prefs.columnWidth;
   root.dataset.lineHeight = prefs.lineHeight;
@@ -131,11 +143,12 @@ function applyPreferencesToElement(root: HTMLElement, prefs: StillPreferences): 
   root.dataset.hideImages = prefs.hideImages ? 'true' : 'false';
   root.dataset.reduceMotion = prefs.reduceMotion ? 'true' : 'false';
   root.dataset.dockPinned = prefs.dockAlwaysVisible ? 'true' : 'false';
+  root.dataset.highContrast = effective.highContrast ? 'true' : 'false';
   applyHideImagesToContent(root, prefs.hideImages);
 }
 
 function syncDockPreferences(root: HTMLElement, prefs: StillPreferences): void {
-  for (const field of ['theme', 'fontSize', 'columnWidth', 'lineHeight'] as const) {
+  for (const field of ['theme', 'fontSize', 'columnWidth', 'lineHeight', 'highContrast'] as const) {
     const buttons = root.querySelectorAll<HTMLButtonElement>(
       `.still-segment-btn[data-field="${field}"]`,
     );
@@ -186,6 +199,12 @@ function segmentAriaKey(field: SegmentField, value: string): MessageKey {
       light: 'ariaThemeLight',
       warm: 'ariaThemeWarm',
       dark: 'ariaThemeDark',
+      system: 'ariaThemeSystem',
+    },
+    highContrast: {
+      system: 'ariaHighContrastSystem',
+      on: 'ariaHighContrastOn',
+      off: 'ariaHighContrastOff',
     },
     fontSize: {
       small: 'ariaFontSizeSmall',
@@ -362,6 +381,10 @@ function createFloatingDock(
         value: 'dark',
         label: `<span class="theme-swatch sw-dark" aria-hidden="true"></span> ${t('themeDark')}`,
       },
+      {
+        value: 'system',
+        label: `<span class="theme-swatch sw-system" aria-hidden="true"></span> ${t('themeSystem')}`,
+      },
     ]),
   );
 
@@ -433,6 +456,20 @@ function createFloatingDock(
   accessibilityLabel.textContent = t('optionsAccessibility');
   accessibilitySection.appendChild(accessibilityLabel);
 
+  const highContrastSection = document.createElement('div');
+  highContrastSection.className = 'still-popover-section';
+  const highContrastLabel = document.createElement('span');
+  highContrastLabel.className = 'still-popover-label';
+  highContrastLabel.textContent = t('prefHighContrast');
+  highContrastSection.appendChild(highContrastLabel);
+  highContrastSection.appendChild(
+    createSegmentedControl('highContrast', t('prefHighContrast'), prefs, [
+      { value: 'system', label: t('prefHighContrastSystem') },
+      { value: 'on', label: t('prefHighContrastOn') },
+      { value: 'off', label: t('prefHighContrastOff') },
+    ]),
+  );
+
   const toggles = document.createElement('div');
   toggles.className = 'still-popover-toggles';
   toggles.append(
@@ -441,7 +478,7 @@ function createFloatingDock(
     createPopoverToggle('reduceMotion', 'prefReduceMotion', prefs.reduceMotion),
     createPopoverToggle('dockAlwaysVisible', 'prefDockAlwaysVisible', prefs.dockAlwaysVisible),
   );
-  accessibilitySection.appendChild(toggles);
+  accessibilitySection.append(highContrastSection, toggles);
 
   popover.append(
     themeSection,
@@ -542,7 +579,12 @@ function createFloatingDock(
   for (const button of popover.querySelectorAll<HTMLButtonElement>('.still-segment-btn')) {
     button.addEventListener('click', async () => {
       const field = button.dataset.field as SegmentField;
-      const value = button.dataset.value as Theme | FontSize | ColumnWidth | LineHeight;
+      const value = button.dataset.value as
+        | Theme
+        | FontSize
+        | ColumnWidth
+        | LineHeight
+        | HighContrastMode;
 
       const siblings = button.parentElement?.querySelectorAll<HTMLButtonElement>('.still-segment-btn');
       siblings?.forEach((sibling) => {
@@ -575,7 +617,7 @@ function createFloatingDock(
     isPopoverOpen: () => settingsButton.getAttribute('aria-expanded') === 'true',
     syncPreferences: (nextPrefs) => {
       const root = container.closest('.still-root');
-      if (root) {
+      if (root instanceof HTMLElement) {
         syncDockPreferences(root, nextPrefs);
       }
     },
@@ -761,14 +803,14 @@ export function createReaderOverlay(
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
   };
 
-  const handleMouseMove = (event: MouseEvent): void => {
-    const distanceFromBottom = window.innerHeight - event.clientY;
+  const handleMouseMove: EventListener = (event): void => {
+    const distanceFromBottom = window.innerHeight - (event as MouseEvent).clientY;
     if (distanceFromBottom <= DOCK_HOVER_ZONE_PX) {
       showDock();
     }
   };
 
-  const handleShadowClick = (event: MouseEvent): void => {
+  const handleShadowClick: EventListener = (event): void => {
     if (!dock.isPopoverOpen()) {
       return;
     }
@@ -832,9 +874,20 @@ export function createReaderOverlay(
 
   document.addEventListener('keydown', handleKeyDown);
 
+  const unsubscribeSystem = subscribeSystemPreferenceChanges(() => {
+    void getPreferences().then((current) => {
+      if (!followsSystemPreferences(current)) {
+        return;
+      }
+
+      applyPreferencesToOverlay(current);
+    });
+  });
+
   return {
     overlay,
     destroy: () => {
+      unsubscribeSystem();
       saveScrollPosition(pageUrl, scrollport.scrollTop);
       scrollport.removeEventListener('scroll', handleScroll);
       shadow.removeEventListener('mousemove', handleMouseMove);

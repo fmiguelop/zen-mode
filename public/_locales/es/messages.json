@@ -35,6 +35,9 @@
   "themeDark": {
     "message": "Oscuro"
   },
+  "themeSystem": {
+    "message": "Sistema"
+  },
   "lineHeightCompact": {
     "message": "Compacto"
   },
@@ -95,6 +98,24 @@
   "optionsAccessibility": {
     "message": "Accesibilidad"
   },
+  "prefHighContrast": {
+    "message": "Alto contraste"
+  },
+  "prefHighContrastSystem": {
+    "message": "Sistema"
+  },
+  "prefHighContrastOn": {
+    "message": "Activado"
+  },
+  "prefHighContrastOff": {
+    "message": "Desactivado"
+  },
+  "optionsSystemAppearanceHint": {
+    "message": "El tema «Sistema» sigue la apariencia de tu dispositivo (claro u oscuro)."
+  },
+  "optionsSystemContrastHint": {
+    "message": "Alto contraste «Sistema» sigue el ajuste de aumentar contraste del dispositivo."
+  },
   "prefUnderlineLinks": {
     "message": "Subrayar siempre los enlaces"
   },
@@ -136,6 +157,18 @@
   },
   "ariaThemeDark": {
     "message": "Tema: Oscuro"
+  },
+  "ariaThemeSystem": {
+    "message": "Tema: Sistema"
+  },
+  "ariaHighContrastSystem": {
+    "message": "Alto contraste: Sistema"
+  },
+  "ariaHighContrastOn": {
+    "message": "Alto contraste: Activado"
+  },
+  "ariaHighContrastOff": {
+    "message": "Alto contraste: Desactivado"
   },
   "ariaFontSizeSmall": {
     "message": "Tamaño de texto: Pequeño"

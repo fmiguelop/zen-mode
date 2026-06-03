@@ -16,7 +16,7 @@
   --still-title: #1A1A18;
   --still-border: #E0E0DB;
   --still-muted: #6B6B66;
-  --still-accent: #5C7A6B;
+  --still-accent: #4A6B5C;
   --still-btn-bg: #FAFAF5;
   --still-btn-border: #D4D4CF;
   --still-btn-label: #444444;
@@ -68,11 +68,68 @@
   --still-title: #1A1A18;
   --still-border: #E0E0DB;
   --still-muted: #6B6B66;
-  --still-accent: #5C7A6B;
+  --still-accent: #4A6B5C;
   --still-btn-bg: #FAFAF5;
   --still-btn-border: #D4D4CF;
   --still-btn-label: #444444;
   --still-code-bg: #EBE6DC;
+}
+
+.still-root[data-high-contrast='true'][data-theme='light'],
+.still-root[data-high-contrast='true'][data-theme='warm'] {
+  --still-bg: #FFFFFF;
+  --still-text: #000000;
+  --still-title: #000000;
+  --still-border: #000000;
+  --still-muted: #333333;
+  --still-accent: #0D47A1;
+  --still-btn-bg: #FFFFFF;
+  --still-btn-border: #000000;
+  --still-btn-label: #000000;
+  --still-code-bg: #F0F0F0;
+}
+
+.still-root[data-high-contrast='true'][data-theme='dark'] {
+  --still-bg: #000000;
+  --still-text: #FFFFFF;
+  --still-title: #FFFFFF;
+  --still-border: #FFFFFF;
+  --still-muted: #CCCCCC;
+  --still-accent: #6DB3FF;
+  --still-btn-bg: #000000;
+  --still-btn-border: #FFFFFF;
+  --still-btn-label: #FFFFFF;
+  --still-code-bg: #1A1A1A;
+}
+
+.still-root[data-high-contrast='true'] .still-content a {
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+}
+
+.still-root[data-high-contrast='true'][data-theme='light'] .still-dock-exit-btn,
+.still-root[data-high-contrast='true'][data-theme='warm'] .still-dock-exit-btn {
+  background: #000000;
+  color: #FFFFFF;
+}
+
+.still-root[data-high-contrast='true'][data-theme='dark'] .still-dock-exit-btn {
+  background: #FFFFFF;
+  color: #000000;
+}
+
+.still-root[data-high-contrast='true'] .still-dock-btn.is-active {
+  background: var(--still-accent);
+  color: var(--still-bg);
+}
+
+.still-root[data-high-contrast='true'] .still-dock-btn:focus-visible,
+.still-root[data-high-contrast='true'] .still-dock-exit-btn:focus-visible,
+.still-root[data-high-contrast='true'] .still-dock-link:focus-visible,
+.still-root[data-high-contrast='true'] .still-segment-btn:focus-visible,
+.still-root[data-high-contrast='true'] .still-skip-link:focus {
+  outline: 3px solid var(--still-accent);
+  outline-offset: 2px;
 }
 
 .still-root[data-font-size='small'] {
@@ -603,6 +660,10 @@
 
 .sw-dark {
   background: #121212;
+}
+
+.sw-system {
+  background: linear-gradient(135deg, #f5f5f0 50%, #121212 50%);
 }
 
 .still-size-label {

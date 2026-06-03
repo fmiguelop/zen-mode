@@ -111,6 +111,10 @@
         background: #121212;
       }
 
+      .sw-system {
+        background: linear-gradient(135deg, #f5f5f0 50%, #121212 50%);
+      }
+
       .still-size-label {
         line-height: 1;
       }
@@ -158,6 +162,13 @@
 
       p + p {
         margin-top: 0.5rem;
+      }
+
+      .still-pref-label {
+        margin: 1rem 0 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--still-ink);
       }
 
       kbd {
@@ -226,6 +237,18 @@
         >
           <span class="theme-swatch sw-dark" aria-hidden="true"></span>
           <span data-i18n="themeDark">Dark</span>
+        </button>
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="theme"
+          data-value="system"
+          data-aria-key="ariaThemeSystem"
+          role="radio"
+          aria-checked="false"
+        >
+          <span class="theme-swatch sw-system" aria-hidden="true"></span>
+          <span data-i18n="themeSystem">System</span>
         </button>
       </div>
     </section>
@@ -399,6 +422,48 @@
 
     <section>
       <h2 data-i18n="optionsAccessibility">Accessibility</h2>
+      <p data-i18n="optionsSystemAppearanceHint">
+        Theme “System” follows your device appearance (light or dark).
+      </p>
+      <p data-i18n="optionsSystemContrastHint">
+        High contrast “System” follows your device increase-contrast setting.
+      </p>
+      <p class="still-pref-label" data-i18n="prefHighContrast">High contrast</p>
+      <div class="still-segmented-control" role="radiogroup" data-i18n-aria="prefHighContrast">
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="highContrast"
+          data-value="system"
+          data-aria-key="ariaHighContrastSystem"
+          role="radio"
+          aria-checked="false"
+        >
+          <span data-i18n="prefHighContrastSystem">System</span>
+        </button>
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="highContrast"
+          data-value="on"
+          data-aria-key="ariaHighContrastOn"
+          role="radio"
+          aria-checked="false"
+        >
+          <span data-i18n="prefHighContrastOn">On</span>
+        </button>
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="highContrast"
+          data-value="off"
+          data-aria-key="ariaHighContrastOff"
+          role="radio"
+          aria-checked="false"
+        >
+          <span data-i18n="prefHighContrastOff">Off</span>
+        </button>
+      </div>
       <label class="still-pref-toggle">
         <input type="checkbox" data-pref="underlineLinks" />
         <span data-i18n="prefUnderlineLinks">Always underline links</span>
