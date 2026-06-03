@@ -16,6 +16,10 @@ Optional preferences (light/dark/warm theme, text size, column width) live in **
 
 Article extraction runs locally in your browser using [Mozilla Readability](https://github.com/mozilla/readability). Nothing is sent to external servers.
 
+## Languages
+
+Extension UI (toolbar, reader overlay, options) follows your **browser UI language**. Supported locales: **English** (`en`) and **Spanish** (`es`). Translations live in `public/_locales/`. Chrome Web Store listing copy is localized separately in the developer dashboard.
+
 ## Development
 
 Requires Node.js 18+.
@@ -44,6 +48,7 @@ utils/
   reading-time.ts          Reading time estimate
   scroll-restore.ts        Session scroll restore per URL
   options-page.ts          Options page logic
+  i18n.ts                  browser.i18n message helper
   reader-overlay.ts        Full-screen reader UI
   toast.ts                 Error notifications
 assets/

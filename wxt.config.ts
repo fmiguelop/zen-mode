@@ -2,8 +2,9 @@ import { defineConfig } from 'wxt';
 
 export default defineConfig({
   manifest: {
-    name: 'Still',
-    description: 'One click turns any article into calm, distraction-free reading. No account. No tracking. Everything stays on your device.',
+    default_locale: 'en',
+    name: '__MSG_extName__',
+    description: '__MSG_extDescription__',
     permissions: ['activeTab', 'scripting', 'storage'],
     commands: {
       'toggle-still': {
@@ -11,12 +12,12 @@ export default defineConfig({
           default: 'Alt+Shift+S',
           mac: 'Alt+Shift+S',
         },
-        description: 'Toggle Still reader mode',
+        description: '__MSG_cmdToggleStill__',
       },
     },
     host_permissions: ['<all_urls>'],
     action: {
-      default_title: 'Read with Still',
+      default_title: '__MSG_actionDefaultTitle__',
     },
     web_accessible_resources: [
       {

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Still — Options</title>
+    <title data-i18n="optionsPageTitle">Still — Options</title>
     <style>
       :root {
         --still-paper: #f5f5f0;
@@ -11,6 +11,9 @@
         --still-muted: #6b6b66;
         --still-border: #e0e0db;
         --still-sage: #5c7a6b;
+        --still-btn-bg: #fafaf5;
+        --still-code-bg: #edece6;
+        --still-btn-label: #444444;
       }
 
       * {
@@ -46,25 +49,104 @@
         color: var(--still-muted);
       }
 
-      fieldset {
-        margin: 0;
-        padding: 0;
-        border: none;
+      .still-segmented-control {
+        display: flex;
+        background: var(--still-code-bg);
+        padding: 3px;
+        border-radius: 8px;
+        gap: 2px;
       }
 
-      label {
+      .still-segment-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.375rem;
+        min-height: 44px;
+        border: none;
+        border-radius: 6px;
+        background: transparent;
+        color: var(--still-btn-label);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .still-segment-btn:hover {
+        background: rgba(26, 26, 24, 0.06);
+      }
+
+      .still-segment-btn[aria-checked='true'] {
+        background: var(--still-btn-bg);
+        color: var(--still-ink);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        font-weight: 600;
+      }
+
+      .still-segment-btn:focus-visible {
+        outline: 2px solid var(--still-sage);
+        outline-offset: 2px;
+      }
+
+      .theme-swatch {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 1px solid var(--still-border);
+      }
+
+      .sw-light {
+        background: #f5f5f0;
+      }
+
+      .sw-warm {
+        background: #f4f0e6;
+      }
+
+      .sw-dark {
+        background: #121212;
+      }
+
+      .still-size-label {
+        line-height: 1;
+      }
+
+      .still-size-label--small {
+        font-size: 12px;
+      }
+
+      .still-size-label--medium {
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .still-size-label--large {
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .still-size-label--xlarge {
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .still-pref-toggle {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        margin-bottom: 0.5rem;
+        min-height: 44px;
         cursor: pointer;
+        color: var(--still-ink);
+        font-size: 0.875rem;
       }
 
-      label:last-child {
-        margin-bottom: 0;
-      }
-
-      input[type='radio'] {
+      .still-pref-toggle input {
+        width: 1rem;
+        height: 1rem;
         accent-color: var(--still-sage);
       }
 
@@ -95,81 +177,257 @@
         font-size: 0.8125rem;
         color: var(--still-muted);
       }
+
+      @media (prefers-reduced-motion: reduce) {
+        .still-segment-btn {
+          transition: none;
+        }
+      }
     </style>
   </head>
   <body>
-    <h1>Still</h1>
+    <h1 data-i18n="extName">Still</h1>
 
     <section>
-      <h2>Appearance</h2>
-      <fieldset>
-        <label>
-          <input type="radio" name="theme" value="light" />
-          Light
-        </label>
-        <label>
-          <input type="radio" name="theme" value="dark" />
-          Dark
-        </label>
-        <label>
-          <input type="radio" name="theme" value="warm" />
-          Warm
-        </label>
-      </fieldset>
+      <h2 data-i18n="optionsAppearance">Appearance</h2>
+      <div class="still-segmented-control" role="radiogroup" data-i18n-aria="theme">
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="theme"
+          data-value="light"
+          data-aria-key="ariaThemeLight"
+          role="radio"
+          aria-checked="false"
+        >
+          <span class="theme-swatch sw-light" aria-hidden="true"></span>
+          <span data-i18n="themeLight">Light</span>
+        </button>
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="theme"
+          data-value="warm"
+          data-aria-key="ariaThemeWarm"
+          role="radio"
+          aria-checked="false"
+        >
+          <span class="theme-swatch sw-warm" aria-hidden="true"></span>
+          <span data-i18n="themeWarm">Warm</span>
+        </button>
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="theme"
+          data-value="dark"
+          data-aria-key="ariaThemeDark"
+          role="radio"
+          aria-checked="false"
+        >
+          <span class="theme-swatch sw-dark" aria-hidden="true"></span>
+          <span data-i18n="themeDark">Dark</span>
+        </button>
+      </div>
     </section>
 
     <section>
-      <h2>Text size</h2>
-      <fieldset>
-        <label>
-          <input type="radio" name="fontSize" value="small" />
-          Small
-        </label>
-        <label>
-          <input type="radio" name="fontSize" value="medium" />
-          Medium
-        </label>
-        <label>
-          <input type="radio" name="fontSize" value="large" />
-          Large
-        </label>
-      </fieldset>
+      <h2 data-i18n="textSize">Text size</h2>
+      <div class="still-segmented-control" role="radiogroup" data-i18n-aria="textSize">
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="fontSize"
+          data-value="small"
+          data-aria-key="ariaFontSizeSmall"
+          role="radio"
+          aria-checked="false"
+        >
+          <span class="still-size-label still-size-label--small">A</span>
+        </button>
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="fontSize"
+          data-value="medium"
+          data-aria-key="ariaFontSizeMedium"
+          role="radio"
+          aria-checked="false"
+        >
+          <span class="still-size-label still-size-label--medium">A</span>
+        </button>
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="fontSize"
+          data-value="large"
+          data-aria-key="ariaFontSizeLarge"
+          role="radio"
+          aria-checked="false"
+        >
+          <span class="still-size-label still-size-label--large">A</span>
+        </button>
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="fontSize"
+          data-value="xlarge"
+          data-aria-key="ariaFontSizeXlarge"
+          role="radio"
+          aria-checked="false"
+        >
+          <span class="still-size-label still-size-label--xlarge">A</span>
+        </button>
+      </div>
     </section>
 
     <section>
-      <h2>Column width</h2>
-      <fieldset>
-        <label>
-          <input type="radio" name="columnWidth" value="narrow" />
-          Narrow
-        </label>
-        <label>
-          <input type="radio" name="columnWidth" value="default" />
-          Default
-        </label>
-        <label>
-          <input type="radio" name="columnWidth" value="wide" />
-          Wide
-        </label>
-      </fieldset>
+      <h2 data-i18n="lineHeight">Line height</h2>
+      <div class="still-segmented-control" role="radiogroup" data-i18n-aria="lineHeight">
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="lineHeight"
+          data-value="compact"
+          data-aria-key="ariaLineHeightCompact"
+          role="radio"
+          aria-checked="false"
+        >
+          <span data-i18n="lineHeightCompact">Compact</span>
+        </button>
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="lineHeight"
+          data-value="default"
+          data-aria-key="ariaLineHeightDefault"
+          role="radio"
+          aria-checked="false"
+        >
+          <span data-i18n="lineHeightDefault">Default</span>
+        </button>
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="lineHeight"
+          data-value="relaxed"
+          data-aria-key="ariaLineHeightRelaxed"
+          role="radio"
+          aria-checked="false"
+        >
+          <span data-i18n="lineHeightRelaxed">Relaxed</span>
+        </button>
+      </div>
     </section>
 
     <section>
-      <h2>Keyboard shortcut</h2>
-      <p>
-        Toggle Still: <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> (Mac: <kbd>Option</kbd> +
-        <kbd>Shift</kbd> + <kbd>S</kbd>)
+      <h2 data-i18n="columnWidth">Column width</h2>
+      <div class="still-segmented-control" role="radiogroup" data-i18n-aria="columnWidth">
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="columnWidth"
+          data-value="narrow"
+          data-aria-key="ariaColumnWidthNarrow"
+          role="radio"
+          aria-checked="false"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <line x1="8" y1="6" x2="16" y2="6"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+            <line x1="8" y1="18" x2="16" y2="18"></line>
+          </svg>
+        </button>
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="columnWidth"
+          data-value="default"
+          data-aria-key="ariaColumnWidthDefault"
+          role="radio"
+          aria-checked="false"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <line x1="5" y1="6" x2="19" y2="6"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <line x1="5" y1="18" x2="19" y2="18"></line>
+          </svg>
+        </button>
+        <button
+          type="button"
+          class="still-segment-btn"
+          data-field="columnWidth"
+          data-value="wide"
+          data-aria-key="ariaColumnWidthWide"
+          role="radio"
+          aria-checked="false"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <line x1="2" y1="6" x2="22" y2="6"></line>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <line x1="2" y1="18" x2="22" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-i18n="optionsAccessibility">Accessibility</h2>
+      <label class="still-pref-toggle">
+        <input type="checkbox" data-pref="underlineLinks" />
+        <span data-i18n="prefUnderlineLinks">Always underline links</span>
+      </label>
+      <label class="still-pref-toggle">
+        <input type="checkbox" data-pref="hideImages" />
+        <span data-i18n="prefHideImages">Hide images in article</span>
+      </label>
+      <label class="still-pref-toggle">
+        <input type="checkbox" data-pref="reduceMotion" />
+        <span data-i18n="prefReduceMotion">Reduce motion</span>
+      </label>
+      <label class="still-pref-toggle">
+        <input type="checkbox" data-pref="dockAlwaysVisible" />
+        <span data-i18n="prefDockAlwaysVisible">Keep dock always visible</span>
+      </label>
+    </section>
+
+    <section>
+      <h2 data-i18n="optionsKeyboardShortcut">Keyboard shortcut</h2>
+      <p id="options-keyboard-toggle"></p>
+      <p data-i18n="optionsKeyboardReader">
+        In reader: open settings from the dock, use + / − to adjust text size, and Esc to close
+        settings or exit.
       </p>
-      <p>
-        In reader: <kbd>+</kbd> / <kbd>−</kbd> to adjust text size, <kbd>Esc</kbd> to exit.
-      </p>
-      <p>
-        To change the toggle shortcut, open <strong>chrome://extensions/shortcuts</strong> and find
-        Still.
-      </p>
+      <p id="options-shortcut-help"></p>
     </section>
 
-    <footer>Still works with zero configuration.</footer>
+    <footer data-i18n="optionsFooter">Still works with zero configuration.</footer>
 
     <script type="module" src="~/utils/options-page.ts"></script>
   </body>

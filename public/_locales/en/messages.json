@@ -1,0 +1,170 @@
+{
+  "extName": {
+    "message": "Still"
+  },
+  "extDescription": {
+    "message": "One click turns any article into calm, distraction-free reading. No account. No tracking. Everything stays on your device."
+  },
+  "cmdToggleStill": {
+    "message": "Toggle Still reader mode"
+  },
+  "actionDefaultTitle": {
+    "message": "Read with Still"
+  },
+  "errorNoArticle": {
+    "message": "Couldn't find article content on this page."
+  },
+  "theme": {
+    "message": "Theme"
+  },
+  "textSize": {
+    "message": "Text size"
+  },
+  "columnWidth": {
+    "message": "Column width"
+  },
+  "lineHeight": {
+    "message": "Line height"
+  },
+  "themeLight": {
+    "message": "Light"
+  },
+  "themeWarm": {
+    "message": "Warm"
+  },
+  "themeDark": {
+    "message": "Dark"
+  },
+  "lineHeightCompact": {
+    "message": "Compact"
+  },
+  "lineHeightDefault": {
+    "message": "Default"
+  },
+  "lineHeightRelaxed": {
+    "message": "Relaxed"
+  },
+  "original": {
+    "message": "Original"
+  },
+  "exit": {
+    "message": "Exit"
+  },
+  "progressRead": {
+    "message": "$percent$% read",
+    "placeholders": {
+      "percent": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "readingTimeMin": {
+    "message": "$minutes$ min read",
+    "placeholders": {
+      "minutes": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "ariaStillReader": {
+    "message": "Still reader"
+  },
+  "ariaAdjustSettings": {
+    "message": "Adjust settings"
+  },
+  "ariaViewOriginal": {
+    "message": "View original page"
+  },
+  "ariaReadingProgress": {
+    "message": "Reading progress"
+  },
+  "ariaDockNav": {
+    "message": "Reader controls"
+  },
+  "skipToArticle": {
+    "message": "Skip to article"
+  },
+  "optionsPageTitle": {
+    "message": "Still — Options"
+  },
+  "optionsAppearance": {
+    "message": "Appearance"
+  },
+  "optionsAccessibility": {
+    "message": "Accessibility"
+  },
+  "prefUnderlineLinks": {
+    "message": "Always underline links"
+  },
+  "prefHideImages": {
+    "message": "Hide images in article"
+  },
+  "prefReduceMotion": {
+    "message": "Reduce motion"
+  },
+  "prefDockAlwaysVisible": {
+    "message": "Keep dock always visible"
+  },
+  "optionsKeyboardShortcut": {
+    "message": "Keyboard shortcut"
+  },
+  "optionsKeyboardToggleIntro": {
+    "message": "Toggle Still:"
+  },
+  "optionsKeyboardToggleMac": {
+    "message": "(Mac:"
+  },
+  "optionsKeyboardReader": {
+    "message": "In reader: open settings from the dock, use + / − to adjust text size, and Esc to close settings or exit."
+  },
+  "optionsShortcutChrome": {
+    "message": "To change the toggle shortcut, open chrome://extensions/shortcuts and find Still."
+  },
+  "optionsShortcutFirefox": {
+    "message": "To change the toggle shortcut, open Add-ons → Extensions → Still → Manage extension shortcuts."
+  },
+  "optionsFooter": {
+    "message": "Still works with zero configuration."
+  },
+  "ariaThemeLight": {
+    "message": "Theme: Light"
+  },
+  "ariaThemeWarm": {
+    "message": "Theme: Warm"
+  },
+  "ariaThemeDark": {
+    "message": "Theme: Dark"
+  },
+  "ariaFontSizeSmall": {
+    "message": "Text size: Small"
+  },
+  "ariaFontSizeMedium": {
+    "message": "Text size: Medium"
+  },
+  "ariaFontSizeLarge": {
+    "message": "Text size: Large"
+  },
+  "ariaFontSizeXlarge": {
+    "message": "Text size: Extra large"
+  },
+  "ariaColumnWidthNarrow": {
+    "message": "Column width: Narrow"
+  },
+  "ariaColumnWidthDefault": {
+    "message": "Column width: Default"
+  },
+  "ariaColumnWidthWide": {
+    "message": "Column width: Wide"
+  },
+  "ariaLineHeightCompact": {
+    "message": "Line height: Compact"
+  },
+  "ariaLineHeightDefault": {
+    "message": "Line height: Default"
+  },
+  "ariaLineHeightRelaxed": {
+    "message": "Line height: Relaxed"
+  }
+}

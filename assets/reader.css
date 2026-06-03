@@ -10,15 +10,6 @@
   box-sizing: border-box !important;
 }
 
-.still-scrollport {
-  position: fixed;
-  inset: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-}
-
 .still-root {
   --still-bg: #F5F5F0;
   --still-text: #1A1A18;
@@ -34,10 +25,20 @@
   --still-line-height: 1.6;
   --still-max-width: 48rem;
 
-  position: relative;
+  position: fixed;
+  inset: 0;
   z-index: 1;
   color: var(--still-text);
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+.still-scrollport {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .still-scrim {
@@ -86,6 +87,22 @@
   --still-font-size: 20px;
 }
 
+.still-root[data-font-size='xlarge'] {
+  --still-font-size: 22px;
+}
+
+.still-root[data-line-height='compact'] {
+  --still-line-height: 1.4;
+}
+
+.still-root[data-line-height='default'] {
+  --still-line-height: 1.6;
+}
+
+.still-root[data-line-height='relaxed'] {
+  --still-line-height: 1.8;
+}
+
 .still-root[data-column-width='narrow'] {
   --still-max-width: 672px;
 }
@@ -117,13 +134,49 @@
   transform: scaleX(0);
 }
 
+.still-skip-link {
+  position: absolute;
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background: var(--still-btn-bg);
+  border: 1px solid var(--still-btn-border);
+  color: var(--still-text);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.still-skip-link:focus {
+  clip: auto;
+  clip-path: none;
+  width: auto;
+  height: auto;
+  outline: 2px solid var(--still-accent);
+  outline-offset: 2px;
+}
+
+.still-main {
+  position: relative;
+  z-index: 1;
+}
+
 .still-reader {
   position: relative;
   z-index: 1;
   box-sizing: border-box;
   max-width: var(--still-max-width) !important;
   margin: 0 auto;
-  padding: 3rem 2rem 5rem;
+  padding: 3rem 2rem 7rem;
 }
 
 .still-header {
@@ -174,6 +227,17 @@
   color: var(--still-accent);
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+.still-root[data-underline-links='true'] .still-content a {
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+}
+
+.still-root[data-hide-images='true'] .still-content img,
+.still-root[data-hide-images='true'] .still-content picture,
+.still-root[data-hide-images='true'] .still-content figure {
+  display: none !important;
 }
 
 .still-content a:hover {
@@ -310,65 +374,339 @@
   color: var(--still-title);
 }
 
-.still-footer {
+.still-dock-container {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  pointer-events: none;
+}
+
+.still-dock-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.still-dock {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--still-border);
-  font-family: inherit;
-  font-size: 13px !important;
+  gap: 0.75rem;
+  min-height: 52px;
+  padding: 0 0.5rem 0 1rem;
+  background: color-mix(in srgb, var(--still-btn-bg) 88%, transparent);
+  border: 1px solid var(--still-btn-border);
+  border-radius: 9999px;
+  box-shadow:
+    0 10px 30px -10px rgba(0, 0, 0, 0.12),
+    0 1px 3px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  pointer-events: auto;
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.3s ease;
+}
+
+.still-dock-container.is-hidden .still-dock {
+  transform: translateY(calc(100% + 1.5rem));
+  opacity: 0;
+}
+
+.still-root[data-dock-pinned='true'] .still-dock-container.is-hidden .still-dock {
+  transform: none;
+  opacity: 1;
+}
+
+.still-dock-separator {
+  width: 1px;
+  height: 1.25rem;
+  background: var(--still-border);
+}
+
+.still-dock-progress-text {
+  font-size: 13px;
+  font-weight: 500;
   color: var(--still-muted);
+  min-width: 60px;
+  text-align: center;
+  user-select: none;
 }
 
-.still-footer-hint {
-  flex: 1;
-  min-width: 0;
-}
-
-.still-footer-actions {
+.still-dock-btn,
+.still-dock-link {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  flex-shrink: 0;
-}
-
-.still-original-link {
+  justify-content: center;
+  gap: 0.375rem;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: none;
+  background: transparent;
   color: var(--still-muted);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+  text-decoration: none;
 }
 
-.still-original-link:hover {
+.still-dock-link {
+  width: auto;
+  padding: 0 0.75rem;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.still-dock-btn:hover,
+.still-dock-link:hover {
+  background: var(--still-border);
   color: var(--still-text);
 }
 
-.still-exit-btn {
-  border: 1px solid var(--still-btn-border);
-  border-radius: 6px;
-  background: var(--still-btn-bg);
-  color: var(--still-btn-label);
+.still-dock-btn.is-active {
+  background: var(--still-accent);
+  color: var(--still-bg);
+}
+
+.still-dock-exit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 1.25rem;
+  border: none;
+  border-radius: 9999px;
+  background: var(--still-accent);
+  color: var(--still-bg);
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  font: inherit;
-  font-size: 14px !important;
-  padding: 0.5rem 1rem;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.1s ease;
 }
 
-.still-exit-btn:hover {
-  background: var(--still-bg);
-  border-color: var(--still-border);
+.still-dock-exit-btn:hover {
+  opacity: 0.9;
 }
 
-.still-exit-btn:focus-visible {
+.still-dock-exit-btn:active {
+  transform: scale(0.97);
+}
+
+.still-settings-popover {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  width: min(290px, calc(100vw - 2rem));
+  max-height: min(70vh, 480px);
+  overflow-y: auto;
+  padding: 1.25rem;
+  background: color-mix(in srgb, var(--still-btn-bg) 92%, transparent);
+  border: 1px solid var(--still-btn-border);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  transition:
+    opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.still-settings-popover.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.still-popover-section {
+  margin-bottom: 1rem;
+}
+
+.still-popover-section:last-child {
+  margin-bottom: 0;
+}
+
+.still-popover-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--still-muted);
+  margin-bottom: 0.5rem;
+}
+
+.still-segmented-control {
+  display: flex;
+  background: var(--still-code-bg);
+  padding: 3px;
+  border-radius: 8px;
+  gap: 2px;
+}
+
+.still-segment-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  min-height: 44px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--still-btn-label);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.still-segment-btn:hover {
+  background: color-mix(in srgb, var(--still-text) 6%, transparent);
+}
+
+.still-segment-btn[aria-checked='true'] {
+  background: var(--still-btn-bg);
+  color: var(--still-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  font-weight: 600;
+}
+
+.theme-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--still-btn-border);
+}
+
+.sw-light {
+  background: #f5f5f0;
+}
+
+.sw-warm {
+  background: #f4f0e6;
+}
+
+.sw-dark {
+  background: #121212;
+}
+
+.still-size-label {
+  line-height: 1;
+}
+
+.still-size-label--small {
+  font-size: 12px;
+}
+
+.still-size-label--medium {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.still-size-label--large {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.still-size-label--xlarge {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.still-popover-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.still-popover-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-size: 13px;
+  color: var(--still-text);
+  cursor: pointer;
+}
+
+.still-popover-toggle input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--still-accent);
+}
+
+.still-dock-btn:focus-visible,
+.still-dock-exit-btn:focus-visible,
+.still-dock-link:focus-visible,
+.still-segment-btn:focus-visible {
   outline: 2px solid var(--still-accent);
   outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .still-exit-btn {
+  .still-dock,
+  .still-settings-popover,
+  .still-dock-exit-btn,
+  .still-dock-btn,
+  .still-dock-link,
+  .still-segment-btn {
     transition: none;
+  }
+}
+
+.still-root[data-reduce-motion='true'] .still-dock,
+.still-root[data-reduce-motion='true'] .still-settings-popover,
+.still-root[data-reduce-motion='true'] .still-dock-exit-btn,
+.still-root[data-reduce-motion='true'] .still-dock-btn,
+.still-root[data-reduce-motion='true'] .still-dock-link,
+.still-root[data-reduce-motion='true'] .still-segment-btn {
+  transition: none;
+}
+
+@media (forced-colors: active) {
+  .still-root {
+    forced-color-adjust: none;
+  }
+
+  .still-scrim,
+  .still-reader,
+  .still-dock {
+    background: Canvas;
+    color: CanvasText;
+    border-color: CanvasText;
+  }
+
+  .still-content a {
+    color: LinkText;
+  }
+
+  .still-dock-btn:focus-visible,
+  .still-dock-exit-btn:focus-visible,
+  .still-dock-link:focus-visible,
+  .still-segment-btn:focus-visible,
+  .still-skip-link:focus {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .still-dock-exit-btn {
+    background: ButtonText;
+    color: Canvas;
+    border: 1px solid CanvasText;
   }
 }

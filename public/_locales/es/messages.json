@@ -1,0 +1,170 @@
+{
+  "extName": {
+    "message": "Still"
+  },
+  "extDescription": {
+    "message": "Un clic convierte cualquier artículo en una lectura tranquila y sin distracciones. Sin cuenta. Sin seguimiento. Todo permanece en tu dispositivo."
+  },
+  "cmdToggleStill": {
+    "message": "Activar o desactivar el modo lectura de Still"
+  },
+  "actionDefaultTitle": {
+    "message": "Leer con Still"
+  },
+  "errorNoArticle": {
+    "message": "No se encontró contenido de artículo en esta página."
+  },
+  "theme": {
+    "message": "Tema"
+  },
+  "textSize": {
+    "message": "Tamaño de texto"
+  },
+  "columnWidth": {
+    "message": "Ancho de columna"
+  },
+  "lineHeight": {
+    "message": "Interlineado"
+  },
+  "themeLight": {
+    "message": "Claro"
+  },
+  "themeWarm": {
+    "message": "Cálido"
+  },
+  "themeDark": {
+    "message": "Oscuro"
+  },
+  "lineHeightCompact": {
+    "message": "Compacto"
+  },
+  "lineHeightDefault": {
+    "message": "Predeterminado"
+  },
+  "lineHeightRelaxed": {
+    "message": "Amplio"
+  },
+  "original": {
+    "message": "Original"
+  },
+  "exit": {
+    "message": "Salir"
+  },
+  "progressRead": {
+    "message": "$percent$% leído",
+    "placeholders": {
+      "percent": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "readingTimeMin": {
+    "message": "$minutes$ min de lectura",
+    "placeholders": {
+      "minutes": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "ariaStillReader": {
+    "message": "Lector Still"
+  },
+  "ariaAdjustSettings": {
+    "message": "Ajustar configuración"
+  },
+  "ariaViewOriginal": {
+    "message": "Ver página original"
+  },
+  "ariaReadingProgress": {
+    "message": "Progreso de lectura"
+  },
+  "ariaDockNav": {
+    "message": "Controles del lector"
+  },
+  "skipToArticle": {
+    "message": "Saltar al artículo"
+  },
+  "optionsPageTitle": {
+    "message": "Still — Opciones"
+  },
+  "optionsAppearance": {
+    "message": "Apariencia"
+  },
+  "optionsAccessibility": {
+    "message": "Accesibilidad"
+  },
+  "prefUnderlineLinks": {
+    "message": "Subrayar siempre los enlaces"
+  },
+  "prefHideImages": {
+    "message": "Ocultar imágenes en el artículo"
+  },
+  "prefReduceMotion": {
+    "message": "Reducir movimiento"
+  },
+  "prefDockAlwaysVisible": {
+    "message": "Mantener el dock siempre visible"
+  },
+  "optionsKeyboardShortcut": {
+    "message": "Atajo de teclado"
+  },
+  "optionsKeyboardToggleIntro": {
+    "message": "Activar Still:"
+  },
+  "optionsKeyboardToggleMac": {
+    "message": "(Mac:"
+  },
+  "optionsKeyboardReader": {
+    "message": "En el lector: abre la configuración desde el dock, usa + / − para ajustar el tamaño del texto y Esc para cerrar la configuración o salir."
+  },
+  "optionsShortcutChrome": {
+    "message": "Para cambiar el atajo, abre chrome://extensions/shortcuts y busca Still."
+  },
+  "optionsShortcutFirefox": {
+    "message": "Para cambiar el atajo, abre Complementos → Extensiones → Still → Gestionar atajos de la extensión."
+  },
+  "optionsFooter": {
+    "message": "Still funciona sin configuración."
+  },
+  "ariaThemeLight": {
+    "message": "Tema: Claro"
+  },
+  "ariaThemeWarm": {
+    "message": "Tema: Cálido"
+  },
+  "ariaThemeDark": {
+    "message": "Tema: Oscuro"
+  },
+  "ariaFontSizeSmall": {
+    "message": "Tamaño de texto: Pequeño"
+  },
+  "ariaFontSizeMedium": {
+    "message": "Tamaño de texto: Mediano"
+  },
+  "ariaFontSizeLarge": {
+    "message": "Tamaño de texto: Grande"
+  },
+  "ariaFontSizeXlarge": {
+    "message": "Tamaño de texto: Extra grande"
+  },
+  "ariaColumnWidthNarrow": {
+    "message": "Ancho de columna: Estrecho"
+  },
+  "ariaColumnWidthDefault": {
+    "message": "Ancho de columna: Predeterminado"
+  },
+  "ariaColumnWidthWide": {
+    "message": "Ancho de columna: Ancho"
+  },
+  "ariaLineHeightCompact": {
+    "message": "Interlineado: Compacto"
+  },
+  "ariaLineHeightDefault": {
+    "message": "Interlineado: Predeterminado"
+  },
+  "ariaLineHeightRelaxed": {
+    "message": "Interlineado: Amplio"
+  }
+}

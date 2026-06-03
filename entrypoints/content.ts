@@ -6,13 +6,16 @@ import {
   getActiveOverlay,
   type ReaderOverlayHandle,
 } from '~/utils/reader-overlay';
+import { t } from '~/utils/i18n';
 import { showToast } from '~/utils/toast';
 
 let activeReader: ReaderOverlayHandle | null = null;
+let focusBeforeStill: HTMLElement | null = null;
 
 function exitStill(): void {
   activeReader?.destroy();
   activeReader = null;
+  focusBeforeStill = null;
 }
 
 async function enterStill(): Promise<void> {
@@ -24,12 +27,15 @@ async function enterStill(): Promise<void> {
   const article = extractArticle();
 
   if (!article) {
-    showToast("Couldn't find article content on this page.");
+    showToast(t('errorNoArticle'));
     return;
   }
 
+  const active = document.activeElement;
+  focusBeforeStill = active instanceof HTMLElement ? active : null;
+
   const prefs = await getPreferences();
-  activeReader = createReaderOverlay(article, exitStill, prefs);
+  activeReader = createReaderOverlay(article, exitStill, prefs, focusBeforeStill);
 }
 
 export default defineContentScript({

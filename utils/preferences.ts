@@ -1,11 +1,17 @@
 export type Theme = 'light' | 'dark' | 'warm';
-export type FontSize = 'small' | 'medium' | 'large';
+export type FontSize = 'small' | 'medium' | 'large' | 'xlarge';
 export type ColumnWidth = 'narrow' | 'default' | 'wide';
+export type LineHeight = 'compact' | 'default' | 'relaxed';
 
 export interface StillPreferences {
   theme: Theme;
   fontSize: FontSize;
   columnWidth: ColumnWidth;
+  lineHeight: LineHeight;
+  underlineLinks: boolean;
+  hideImages: boolean;
+  reduceMotion: boolean;
+  dockAlwaysVisible: boolean;
 }
 
 const STORAGE_KEY = 'stillPreferences';
@@ -15,20 +21,38 @@ export const DEFAULT_PREFERENCES: StillPreferences = {
   theme: 'light',
   fontSize: 'medium',
   columnWidth: 'default',
+  lineHeight: 'default',
+  underlineLinks: false,
+  hideImages: false,
+  reduceMotion: false,
+  dockAlwaysVisible: false,
 };
 
-const FONT_SIZE_ORDER: FontSize[] = ['small', 'medium', 'large'];
+const FONT_SIZE_ORDER: FontSize[] = ['small', 'medium', 'large', 'xlarge'];
 
 function isTheme(value: unknown): value is Theme {
   return value === 'light' || value === 'dark' || value === 'warm';
 }
 
 function isFontSize(value: unknown): value is FontSize {
-  return value === 'small' || value === 'medium' || value === 'large';
+  return (
+    value === 'small' ||
+    value === 'medium' ||
+    value === 'large' ||
+    value === 'xlarge'
+  );
 }
 
 function isColumnWidth(value: unknown): value is ColumnWidth {
   return value === 'narrow' || value === 'default' || value === 'wide';
+}
+
+function isLineHeight(value: unknown): value is LineHeight {
+  return value === 'compact' || value === 'default' || value === 'relaxed';
+}
+
+function isBoolean(value: unknown, fallback: boolean): boolean {
+  return typeof value === 'boolean' ? value : fallback;
 }
 
 function normalizePreferences(raw: unknown, legacyTheme?: unknown): StillPreferences {
@@ -45,6 +69,16 @@ function normalizePreferences(raw: unknown, legacyTheme?: unknown): StillPrefere
     columnWidth: isColumnWidth(prefs.columnWidth)
       ? prefs.columnWidth
       : DEFAULT_PREFERENCES.columnWidth,
+    lineHeight: isLineHeight(prefs.lineHeight)
+      ? prefs.lineHeight
+      : DEFAULT_PREFERENCES.lineHeight,
+    underlineLinks: isBoolean(prefs.underlineLinks, DEFAULT_PREFERENCES.underlineLinks),
+    hideImages: isBoolean(prefs.hideImages, DEFAULT_PREFERENCES.hideImages),
+    reduceMotion: isBoolean(prefs.reduceMotion, DEFAULT_PREFERENCES.reduceMotion),
+    dockAlwaysVisible: isBoolean(
+      prefs.dockAlwaysVisible,
+      DEFAULT_PREFERENCES.dockAlwaysVisible,
+    ),
   };
 }
 

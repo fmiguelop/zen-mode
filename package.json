@@ -1,8 +1,8 @@
 {
-  "name": "still",
+  "name": "Still: Distraction-Free Reader Mode",
   "description": "One click turns any article into calm, distraction-free reading. No account. No tracking. Everything stays on your device.",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "wxt",

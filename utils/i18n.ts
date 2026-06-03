@@ -1,0 +1,62 @@
+export type MessageKey =
+  | 'extName'
+  | 'extDescription'
+  | 'cmdToggleStill'
+  | 'actionDefaultTitle'
+  | 'errorNoArticle'
+  | 'theme'
+  | 'textSize'
+  | 'columnWidth'
+  | 'lineHeight'
+  | 'themeLight'
+  | 'themeWarm'
+  | 'themeDark'
+  | 'lineHeightCompact'
+  | 'lineHeightDefault'
+  | 'lineHeightRelaxed'
+  | 'original'
+  | 'exit'
+  | 'progressRead'
+  | 'readingTimeMin'
+  | 'ariaStillReader'
+  | 'ariaAdjustSettings'
+  | 'ariaViewOriginal'
+  | 'ariaReadingProgress'
+  | 'ariaDockNav'
+  | 'skipToArticle'
+  | 'optionsPageTitle'
+  | 'optionsAppearance'
+  | 'optionsAccessibility'
+  | 'prefUnderlineLinks'
+  | 'prefHideImages'
+  | 'prefReduceMotion'
+  | 'prefDockAlwaysVisible'
+  | 'optionsKeyboardShortcut'
+  | 'optionsKeyboardToggleIntro'
+  | 'optionsKeyboardToggleMac'
+  | 'optionsKeyboardReader'
+  | 'optionsShortcutChrome'
+  | 'optionsShortcutFirefox'
+  | 'optionsFooter'
+  | 'ariaThemeLight'
+  | 'ariaThemeWarm'
+  | 'ariaThemeDark'
+  | 'ariaFontSizeSmall'
+  | 'ariaFontSizeMedium'
+  | 'ariaFontSizeLarge'
+  | 'ariaFontSizeXlarge'
+  | 'ariaColumnWidthNarrow'
+  | 'ariaColumnWidthDefault'
+  | 'ariaColumnWidthWide'
+  | 'ariaLineHeightCompact'
+  | 'ariaLineHeightDefault'
+  | 'ariaLineHeightRelaxed';
+
+export function t(key: MessageKey, substitutions?: string | string[]): string {
+  // WXT generates strict i18n key types from _locales; MessageKey mirrors that catalog.
+  return browser.i18n.getMessage(key as Parameters<typeof browser.i18n.getMessage>[0], substitutions) ?? key;
+}
+
+export function getUiLanguage(): string {
+  return browser.i18n.getUILanguage().split('-')[0] ?? 'en';
+}
