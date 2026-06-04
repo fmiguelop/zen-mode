@@ -384,6 +384,34 @@ function createPopoverToggle(
   return label;
 }
 
+function createPopoverSection(): HTMLDivElement {
+  const section = document.createElement('div');
+  section.className = 'still-popover-section';
+  return section;
+}
+
+function createPopoverHeading(key: MessageKey): HTMLSpanElement {
+  const heading = document.createElement('span');
+  heading.className = 'still-popover-heading';
+  heading.textContent = t(key);
+  return heading;
+}
+
+function createPopoverControlGroup(
+  labelKey: MessageKey,
+  control: HTMLElement,
+): HTMLDivElement {
+  const group = document.createElement('div');
+  group.className = 'still-popover-control-group';
+
+  const label = document.createElement('span');
+  label.className = 'still-popover-control-label';
+  label.textContent = t(labelKey);
+
+  group.append(label, control);
+  return group;
+}
+
 function createFloatingDock(
   pageUrl: string,
   onExit: () => void,
@@ -397,13 +425,9 @@ function createFloatingDock(
   popover.id = 'still-settings-popover';
   popover.setAttribute('aria-hidden', 'true');
 
-  const themeSection = document.createElement('div');
-  themeSection.className = 'still-popover-section';
-  const themeLabel = document.createElement('span');
-  themeLabel.className = 'still-popover-label';
-  themeLabel.textContent = t('theme');
-  themeSection.appendChild(themeLabel);
-  themeSection.appendChild(
+  const appearanceSection = createPopoverSection();
+  appearanceSection.append(
+    createPopoverHeading('optionsAppearance'),
     createSegmentedControl('theme', t('theme'), prefs, [
       {
         value: 'light',
@@ -424,100 +448,60 @@ function createFloatingDock(
     ]),
   );
 
-  const fontSizeSection = document.createElement('div');
-  fontSizeSection.className = 'still-popover-section';
-  const fontSizeLabel = document.createElement('span');
-  fontSizeLabel.className = 'still-popover-label';
-  fontSizeLabel.textContent = t('textSize');
-  fontSizeSection.appendChild(fontSizeLabel);
-  const fontFamilySection = document.createElement('div');
-  fontFamilySection.className = 'still-popover-section';
-  const fontFamilyLabel = document.createElement('span');
-  fontFamilyLabel.className = 'still-popover-label';
-  fontFamilyLabel.textContent = t('font');
-  fontFamilySection.appendChild(fontFamilyLabel);
-  fontFamilySection.appendChild(
-    createSegmentedControl('fontFamily', t('font'), prefs, [
-      { value: 'inter', label: t('fontInter') },
-      { value: 'atkinson', label: t('fontAtkinson') },
-      { value: 'system', label: t('fontSystem') },
-    ]),
-  );
-
-  fontSizeSection.appendChild(
-    createSegmentedControl('fontSize', t('textSize'), prefs, [
-      { value: 'small', label: '<span class="still-size-label still-size-label--small">A</span>' },
-      {
-        value: 'medium',
-        label: '<span class="still-size-label still-size-label--medium">A</span>',
-      },
-      { value: 'large', label: '<span class="still-size-label still-size-label--large">A</span>' },
-      {
-        value: 'xlarge',
-        label: '<span class="still-size-label still-size-label--xlarge">A</span>',
-      },
-    ]),
-  );
-
-  const lineHeightSection = document.createElement('div');
-  lineHeightSection.className = 'still-popover-section';
-  const lineHeightLabel = document.createElement('span');
-  lineHeightLabel.className = 'still-popover-label';
-  lineHeightLabel.textContent = t('lineHeight');
-  lineHeightSection.appendChild(lineHeightLabel);
-  lineHeightSection.appendChild(
-    createSegmentedControl('lineHeight', t('lineHeight'), prefs, [
-      { value: 'compact', label: t('lineHeightCompact') },
-      { value: 'default', label: t('lineHeightDefault') },
-      { value: 'relaxed', label: t('lineHeightRelaxed') },
-    ]),
-  );
-
-  const columnWidthSection = document.createElement('div');
-  columnWidthSection.className = 'still-popover-section';
-  const columnWidthLabel = document.createElement('span');
-  columnWidthLabel.className = 'still-popover-label';
-  columnWidthLabel.textContent = t('columnWidth');
-  columnWidthSection.appendChild(columnWidthLabel);
-  columnWidthSection.appendChild(
-    createSegmentedControl('columnWidth', t('columnWidth'), prefs, [
-      {
-        value: 'narrow',
-        label:
-          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="8" y1="6" x2="16" y2="6"></line><line x1="8" y1="12" x2="16" y2="12"></line><line x1="8" y1="18" x2="16" y2="18"></line></svg>',
-      },
-      {
-        value: 'default',
-        label:
-          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="6" x2="19" y2="6"></line><line x1="5" y1="12" x2="19" y2="12"></line><line x1="5" y1="18" x2="19" y2="18"></line></svg>',
-      },
-      {
-        value: 'wide',
-        label:
-          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="2" y1="6" x2="22" y2="6"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="18" x2="22" y2="18"></line></svg>',
-      },
-    ]),
-  );
-
-  const accessibilitySection = document.createElement('div');
-  accessibilitySection.className = 'still-popover-section';
-  const accessibilityLabel = document.createElement('span');
-  accessibilityLabel.className = 'still-popover-label';
-  accessibilityLabel.textContent = t('optionsAccessibility');
-  accessibilitySection.appendChild(accessibilityLabel);
-
-  const highContrastSection = document.createElement('div');
-  highContrastSection.className = 'still-popover-section';
-  const highContrastLabel = document.createElement('span');
-  highContrastLabel.className = 'still-popover-label';
-  highContrastLabel.textContent = t('prefHighContrast');
-  highContrastSection.appendChild(highContrastLabel);
-  highContrastSection.appendChild(
-    createSegmentedControl('highContrast', t('prefHighContrast'), prefs, [
-      { value: 'system', label: t('prefHighContrastSystem') },
-      { value: 'on', label: t('prefHighContrastOn') },
-      { value: 'off', label: t('prefHighContrastOff') },
-    ]),
+  const readingSection = createPopoverSection();
+  readingSection.append(
+    createPopoverHeading('optionsReading'),
+    createPopoverControlGroup(
+      'font',
+      createSegmentedControl('fontFamily', t('font'), prefs, [
+        { value: 'inter', label: t('fontInter') },
+        { value: 'atkinson', label: t('fontAtkinson') },
+        { value: 'system', label: t('fontSystem') },
+      ]),
+    ),
+    createPopoverControlGroup(
+      'textSize',
+      createSegmentedControl('fontSize', t('textSize'), prefs, [
+        { value: 'small', label: '<span class="still-size-label still-size-label--small">A</span>' },
+        {
+          value: 'medium',
+          label: '<span class="still-size-label still-size-label--medium">A</span>',
+        },
+        { value: 'large', label: '<span class="still-size-label still-size-label--large">A</span>' },
+        {
+          value: 'xlarge',
+          label: '<span class="still-size-label still-size-label--xlarge">A</span>',
+        },
+      ]),
+    ),
+    createPopoverControlGroup(
+      'lineHeight',
+      createSegmentedControl('lineHeight', t('lineHeight'), prefs, [
+        { value: 'compact', label: t('lineHeightCompact') },
+        { value: 'default', label: t('lineHeightDefault') },
+        { value: 'relaxed', label: t('lineHeightRelaxed') },
+      ]),
+    ),
+    createPopoverControlGroup(
+      'columnWidth',
+      createSegmentedControl('columnWidth', t('columnWidth'), prefs, [
+        {
+          value: 'narrow',
+          label:
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="8" y1="6" x2="16" y2="6"></line><line x1="8" y1="12" x2="16" y2="12"></line><line x1="8" y1="18" x2="16" y2="18"></line></svg>',
+        },
+        {
+          value: 'default',
+          label:
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="6" x2="19" y2="6"></line><line x1="5" y1="12" x2="19" y2="12"></line><line x1="5" y1="18" x2="19" y2="18"></line></svg>',
+        },
+        {
+          value: 'wide',
+          label:
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="2" y1="6" x2="22" y2="6"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="18" x2="22" y2="18"></line></svg>',
+        },
+      ]),
+    ),
   );
 
   const toggles = document.createElement('div');
@@ -528,16 +512,22 @@ function createFloatingDock(
     createPopoverToggle('reduceMotion', 'prefReduceMotion', prefs.reduceMotion),
     createPopoverToggle('dockAlwaysVisible', 'prefDockAlwaysVisible', prefs.dockAlwaysVisible),
   );
-  accessibilitySection.append(highContrastSection, toggles);
 
-  popover.append(
-    themeSection,
-    fontFamilySection,
-    fontSizeSection,
-    lineHeightSection,
-    columnWidthSection,
-    accessibilitySection,
+  const accessibilitySection = createPopoverSection();
+  accessibilitySection.append(
+    createPopoverHeading('optionsAccessibility'),
+    createPopoverControlGroup(
+      'prefHighContrast',
+      createSegmentedControl('highContrast', t('prefHighContrast'), prefs, [
+        { value: 'system', label: t('prefHighContrastSystem') },
+        { value: 'on', label: t('prefHighContrastOn') },
+        { value: 'off', label: t('prefHighContrastOff') },
+      ]),
+    ),
+    toggles,
   );
+
+  popover.append(appearanceSection, readingSection, accessibilitySection);
 
   const dock = document.createElement('div');
   dock.className = 'still-dock';
