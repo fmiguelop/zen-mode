@@ -143,6 +143,9 @@
   "prefDockAlwaysVisible": {
     "message": "Mantener el dock siempre visible"
   },
+  "prefEnterFullscreenOnOpen": {
+    "message": "Pantalla completa al abrir Still"
+  },
   "optionsKeyboardShortcut": {
     "message": "Atajo de teclado"
   },

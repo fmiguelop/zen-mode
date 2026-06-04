@@ -43,6 +43,7 @@ export type MessageKey =
   | 'prefHideImages'
   | 'prefReduceMotion'
   | 'prefDockAlwaysVisible'
+  | 'prefEnterFullscreenOnOpen'
   | 'optionsKeyboardShortcut'
   | 'optionsKeyboardToggleIntro'
   | 'optionsKeyboardToggleMac'

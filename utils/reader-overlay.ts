@@ -38,7 +38,8 @@ type BooleanPrefField =
   | 'underlineLinks'
   | 'hideImages'
   | 'reduceMotion'
-  | 'dockAlwaysVisible';
+  | 'dockAlwaysVisible'
+  | 'enterFullscreenOnOpen';
 
 const PROGRESS_UPDATE_MIN_MS = 1000;
 const PROGRESS_UPDATE_MIN_DELTA = 5;
@@ -194,6 +195,7 @@ function syncDockPreferences(root: HTMLElement, prefs: StillPreferences): void {
     'hideImages',
     'reduceMotion',
     'dockAlwaysVisible',
+    'enterFullscreenOnOpen',
   ] as const) {
     const input = root.querySelector<HTMLInputElement>(`input[data-pref="${field}"]`);
     if (input) {
@@ -501,6 +503,11 @@ function createFloatingDock(
             '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="2" y1="6" x2="22" y2="6"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="18" x2="22" y2="18"></line></svg>',
         },
       ]),
+    ),
+    createPopoverToggle(
+      'enterFullscreenOnOpen',
+      'prefEnterFullscreenOnOpen',
+      prefs.enterFullscreenOnOpen,
     ),
   );
 

@@ -28,4 +28,14 @@ describe('normalizeStillPreferences', () => {
     expect(result.theme).toBe(DEFAULT_PREFERENCES.theme);
     expect(result.fontFamily).toBe(DEFAULT_PREFERENCES.fontFamily);
   });
+
+  it('defaults enterFullscreenOnOpen to false when missing', () => {
+    expect(normalizeStillPreferences({}).enterFullscreenOnOpen).toBe(false);
+  });
+
+  it('preserves enterFullscreenOnOpen when valid', () => {
+    expect(normalizeStillPreferences({ enterFullscreenOnOpen: true }).enterFullscreenOnOpen).toBe(
+      true,
+    );
+  });
 });

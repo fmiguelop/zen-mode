@@ -16,6 +16,7 @@ export interface StillPreferences {
   hideImages: boolean;
   reduceMotion: boolean;
   dockAlwaysVisible: boolean;
+  enterFullscreenOnOpen: boolean;
   highContrast: HighContrastMode;
 }
 
@@ -32,6 +33,7 @@ export const DEFAULT_PREFERENCES: StillPreferences = {
   hideImages: false,
   reduceMotion: false,
   dockAlwaysVisible: false,
+  enterFullscreenOnOpen: false,
   highContrast: 'system',
 };
 
@@ -120,6 +122,10 @@ export function normalizeStillPreferences(
     dockAlwaysVisible: isBoolean(
       prefs.dockAlwaysVisible,
       DEFAULT_PREFERENCES.dockAlwaysVisible,
+    ),
+    enterFullscreenOnOpen: isBoolean(
+      prefs.enterFullscreenOnOpen,
+      DEFAULT_PREFERENCES.enterFullscreenOnOpen,
     ),
     highContrast: normalizeHighContrast(prefs.highContrast),
   };

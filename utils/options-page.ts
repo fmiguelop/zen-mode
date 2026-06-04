@@ -26,7 +26,8 @@ type BooleanPrefField =
   | 'underlineLinks'
   | 'hideImages'
   | 'reduceMotion'
-  | 'dockAlwaysVisible';
+  | 'dockAlwaysVisible'
+  | 'enterFullscreenOnOpen';
 
 function applyStaticTranslations(): void {
   document.documentElement.lang = getUiLanguage();
@@ -145,6 +146,7 @@ async function init(): Promise<void> {
   syncBooleanPref('hideImages', prefs.hideImages);
   syncBooleanPref('reduceMotion', prefs.reduceMotion);
   syncBooleanPref('dockAlwaysVisible', prefs.dockAlwaysVisible);
+  syncBooleanPref('enterFullscreenOnOpen', prefs.enterFullscreenOnOpen);
 
   subscribeSystemPreferenceChanges(() => {
     void getPreferences().then((current) => {

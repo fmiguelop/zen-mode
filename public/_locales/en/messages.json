@@ -143,6 +143,9 @@
   "prefDockAlwaysVisible": {
     "message": "Keep dock always visible"
   },
+  "prefEnterFullscreenOnOpen": {
+    "message": "Enter fullscreen when Still opens"
+  },
   "optionsKeyboardShortcut": {
     "message": "Keyboard shortcut"
   },

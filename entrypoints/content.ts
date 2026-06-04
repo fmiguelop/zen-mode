@@ -34,11 +34,18 @@ function runViewTransition(updateDom: () => void, prefs: StillPreferences | null
   updateDom();
 }
 
+function notifyExitStill(): void {
+  void browser.runtime.sendMessage({ type: 'EXIT_STILL' }).catch(() => {
+    // Background may be unavailable during extension reload.
+  });
+}
+
 function exitStill(): void {
   const performExit = (): void => {
     activeReader?.destroy();
     activeReader = null;
     focusBeforeStill = null;
+    notifyExitStill();
   };
 
   runViewTransition(performExit, cachedPrefs);
@@ -54,6 +61,7 @@ async function enterStill(): Promise<void> {
 
   if (!article) {
     showToast(t('errorNoArticle'));
+    notifyExitStill();
     return;
   }
 
