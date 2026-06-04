@@ -20,6 +20,18 @@
   "textSize": {
     "message": "Text size"
   },
+  "font": {
+    "message": "Font"
+  },
+  "fontInter": {
+    "message": "Inter"
+  },
+  "fontAtkinson": {
+    "message": "Atkinson"
+  },
+  "fontSystem": {
+    "message": "System"
+  },
   "columnWidth": {
     "message": "Column width"
   },
@@ -199,5 +211,14 @@
   },
   "ariaLineHeightRelaxed": {
     "message": "Line height: Relaxed"
+  },
+  "ariaFontInter": {
+    "message": "Font: Inter"
+  },
+  "ariaFontAtkinson": {
+    "message": "Font: Atkinson Hyperlegible"
+  },
+  "ariaFontSystem": {
+    "message": "Font: System font"
   }
 }

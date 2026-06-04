@@ -55,7 +55,7 @@ assets/
   reader.css          Reader overlay styles
 public/
   icon/               Extension icons (16–128px)
-  fonts/              Bundled Inter Variable
+  fonts/              Inter Variable + Atkinson Hyperlegible (OFL)
 docs/
   store-listing.md    Chrome Web Store copy
   PRIVACY.md          Privacy policy
@@ -87,7 +87,7 @@ The **frame-column** mark: a charcoal rounded square with a narrow cream column 
 
 ### Typography
 
-**Inter Variable** for all UI and reader text. Bundled locally — no external font requests.
+**Reader font** (Options + reader dock): **Inter** (default), **Atkinson Hyperlegible**, or **System**. UI chrome uses Inter; article text uses the selected font. All bundled fonts ship locally — no external font requests.
 
 ## Chrome Web Store publish checklist
 

@@ -20,6 +20,18 @@
   "textSize": {
     "message": "Tamaño de texto"
   },
+  "font": {
+    "message": "Fuente"
+  },
+  "fontInter": {
+    "message": "Inter"
+  },
+  "fontAtkinson": {
+    "message": "Atkinson"
+  },
+  "fontSystem": {
+    "message": "Sistema"
+  },
   "columnWidth": {
     "message": "Ancho de columna"
   },
@@ -199,5 +211,14 @@
   },
   "ariaLineHeightRelaxed": {
     "message": "Interlineado: Amplio"
+  },
+  "ariaFontInter": {
+    "message": "Fuente: Inter"
+  },
+  "ariaFontAtkinson": {
+    "message": "Fuente: Atkinson Hyperlegible"
+  },
+  "ariaFontSystem": {
+    "message": "Fuente: Fuente del sistema"
   }
 }

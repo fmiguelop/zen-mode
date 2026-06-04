@@ -2,6 +2,7 @@ import {
   getPreferences,
   setPreferences,
   type ColumnWidth,
+  type FontFamily,
   type FontSize,
   type HighContrastMode,
   type LineHeight,
@@ -14,7 +15,13 @@ import {
 } from '~/utils/resolve-effective-preferences';
 import { getUiLanguage, t, type MessageKey } from '~/utils/i18n';
 
-type SegmentField = 'theme' | 'fontSize' | 'columnWidth' | 'lineHeight' | 'highContrast';
+type SegmentField =
+  | 'theme'
+  | 'fontFamily'
+  | 'fontSize'
+  | 'columnWidth'
+  | 'lineHeight'
+  | 'highContrast';
 type BooleanPrefField =
   | 'underlineLinks'
   | 'hideImages'
@@ -75,7 +82,14 @@ function syncSegmentGroup(field: SegmentField, value: StillPreferences[SegmentFi
 }
 
 function syncAllSegments(prefs: StillPreferences): void {
-  for (const field of ['theme', 'fontSize', 'columnWidth', 'lineHeight', 'highContrast'] as const) {
+  for (const field of [
+    'theme',
+    'fontFamily',
+    'fontSize',
+    'columnWidth',
+    'lineHeight',
+    'highContrast',
+  ] as const) {
     syncSegmentGroup(field, prefs[field]);
   }
 }
@@ -96,6 +110,7 @@ function bindSegmentGroup(field: SegmentField): void {
     button.addEventListener('click', async () => {
       const value = button.dataset.value as
         | Theme
+        | FontFamily
         | FontSize
         | ColumnWidth
         | LineHeight
@@ -143,6 +158,7 @@ async function init(): Promise<void> {
 }
 
 bindSegmentGroup('theme');
+bindSegmentGroup('fontFamily');
 bindSegmentGroup('fontSize');
 bindSegmentGroup('columnWidth');
 bindSegmentGroup('lineHeight');

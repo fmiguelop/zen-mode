@@ -24,12 +24,27 @@
   --still-font-size: 18px;
   --still-line-height: 1.6;
   --still-max-width: 48rem;
+  --still-ui-font: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --still-reader-font: var(--still-ui-font);
 
   position: fixed;
   inset: 0;
   z-index: 1;
   color: var(--still-text);
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-family: var(--still-ui-font) !important;
+}
+
+.still-root[data-font-family='inter'] {
+  --still-reader-font: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.still-root[data-font-family='atkinson'] {
+  --still-reader-font: 'Atkinson Hyperlegible', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+}
+
+.still-root[data-font-family='system'] {
+  --still-reader-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .still-scrollport {
@@ -240,6 +255,13 @@
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--still-border);
+}
+
+.still-reader,
+.still-reader .still-title,
+.still-reader .still-byline,
+.still-reader .still-content {
+  font-family: var(--still-reader-font) !important;
 }
 
 .still-title {

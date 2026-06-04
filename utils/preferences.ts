@@ -4,9 +4,11 @@ export type HighContrastMode = 'system' | 'on' | 'off';
 export type FontSize = 'small' | 'medium' | 'large' | 'xlarge';
 export type ColumnWidth = 'narrow' | 'default' | 'wide';
 export type LineHeight = 'compact' | 'default' | 'relaxed';
+export type FontFamily = 'inter' | 'atkinson' | 'system';
 
 export interface StillPreferences {
   theme: Theme;
+  fontFamily: FontFamily;
   fontSize: FontSize;
   columnWidth: ColumnWidth;
   lineHeight: LineHeight;
@@ -22,6 +24,7 @@ const LEGACY_THEME_KEY = 'theme';
 
 export const DEFAULT_PREFERENCES: StillPreferences = {
   theme: 'system',
+  fontFamily: 'inter',
   fontSize: 'medium',
   columnWidth: 'default',
   lineHeight: 'default',
@@ -80,11 +83,18 @@ function isLineHeight(value: unknown): value is LineHeight {
   return value === 'compact' || value === 'default' || value === 'relaxed';
 }
 
+function isFontFamily(value: unknown): value is FontFamily {
+  return value === 'inter' || value === 'atkinson' || value === 'system';
+}
+
 function isBoolean(value: unknown, fallback: boolean): boolean {
   return typeof value === 'boolean' ? value : fallback;
 }
 
-function normalizePreferences(raw: unknown, legacyTheme?: unknown): StillPreferences {
+export function normalizeStillPreferences(
+  raw: unknown,
+  legacyTheme?: unknown,
+): StillPreferences {
   const prefs = raw && typeof raw === 'object' ? (raw as Partial<StillPreferences>) : {};
   const theme = isTheme(prefs.theme)
     ? prefs.theme
@@ -94,6 +104,9 @@ function normalizePreferences(raw: unknown, legacyTheme?: unknown): StillPrefere
 
   return {
     theme,
+    fontFamily: isFontFamily(prefs.fontFamily)
+      ? prefs.fontFamily
+      : DEFAULT_PREFERENCES.fontFamily,
     fontSize: isFontSize(prefs.fontSize) ? prefs.fontSize : DEFAULT_PREFERENCES.fontSize,
     columnWidth: isColumnWidth(prefs.columnWidth)
       ? prefs.columnWidth
@@ -114,7 +127,7 @@ function normalizePreferences(raw: unknown, legacyTheme?: unknown): StillPrefere
 
 export async function getPreferences(): Promise<StillPreferences> {
   const result = await browser.storage.sync.get([STORAGE_KEY, LEGACY_THEME_KEY]);
-  return normalizePreferences(result[STORAGE_KEY], result[LEGACY_THEME_KEY]);
+  return normalizeStillPreferences(result[STORAGE_KEY], result[LEGACY_THEME_KEY]);
 }
 
 export async function setPreferences(partial: Partial<StillPreferences>): Promise<void> {
@@ -136,7 +149,7 @@ export function onPreferencesChanged(callback: (prefs: StillPreferences) => void
     }
 
     if (STORAGE_KEY in changes) {
-      callback(normalizePreferences(changes[STORAGE_KEY].newValue));
+      callback(normalizeStillPreferences(changes[STORAGE_KEY].newValue));
       return;
     }
 

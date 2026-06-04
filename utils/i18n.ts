@@ -6,6 +6,10 @@ export type MessageKey =
   | 'errorNoArticle'
   | 'theme'
   | 'textSize'
+  | 'font'
+  | 'fontInter'
+  | 'fontAtkinson'
+  | 'fontSystem'
   | 'columnWidth'
   | 'lineHeight'
   | 'themeLight'
@@ -61,7 +65,10 @@ export type MessageKey =
   | 'ariaColumnWidthWide'
   | 'ariaLineHeightCompact'
   | 'ariaLineHeightDefault'
-  | 'ariaLineHeightRelaxed';
+  | 'ariaLineHeightRelaxed'
+  | 'ariaFontInter'
+  | 'ariaFontAtkinson'
+  | 'ariaFontSystem';
 
 export function t(key: MessageKey, substitutions?: string | string[]): string {
   // WXT generates strict i18n key types from _locales; MessageKey mirrors that catalog.

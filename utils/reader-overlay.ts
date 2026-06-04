@@ -5,6 +5,7 @@ import {
   getPreferences,
   setPreferences,
   type ColumnWidth,
+  type FontFamily,
   type FontSize,
   type HighContrastMode,
   type LineHeight,
@@ -26,7 +27,13 @@ const GLOBAL_STYLE_ID = 'still-global-styles';
 const SCROLLPORT_CLASS = 'still-scrollport';
 const DOCK_HOVER_ZONE_PX = 60;
 
-type SegmentField = 'theme' | 'fontSize' | 'columnWidth' | 'lineHeight' | 'highContrast';
+type SegmentField =
+  | 'theme'
+  | 'fontFamily'
+  | 'fontSize'
+  | 'columnWidth'
+  | 'lineHeight'
+  | 'highContrast';
 type BooleanPrefField =
   | 'underlineLinks'
   | 'hideImages'
@@ -54,13 +61,29 @@ interface FloatingDockHandle {
 }
 
 function buildFontFace(): string {
-  const fontUrl = browser.runtime.getURL('/fonts/InterVariable.ttf');
+  const interUrl = browser.runtime.getURL('/fonts/InterVariable.ttf');
+  const atkinsonRegularUrl = browser.runtime.getURL('/fonts/AtkinsonHyperlegible-Regular.ttf');
+  const atkinsonBoldUrl = browser.runtime.getURL('/fonts/AtkinsonHyperlegible-Bold.ttf');
 
   return `
     @font-face {
       font-family: 'Inter';
-      src: url('${fontUrl}') format('truetype');
+      src: url('${interUrl}') format('truetype');
       font-weight: 100 900;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Atkinson Hyperlegible';
+      src: url('${atkinsonRegularUrl}') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Atkinson Hyperlegible';
+      src: url('${atkinsonBoldUrl}') format('truetype');
+      font-weight: 700;
+      font-style: normal;
       font-display: swap;
     }
   `;
@@ -136,6 +159,7 @@ function applyPreferencesToElement(root: HTMLElement, prefs: StillPreferences): 
   const effective = resolveEffectivePreferences(prefs);
 
   root.dataset.theme = effective.theme;
+  root.dataset.fontFamily = prefs.fontFamily;
   root.dataset.fontSize = prefs.fontSize;
   root.dataset.columnWidth = prefs.columnWidth;
   root.dataset.lineHeight = prefs.lineHeight;
@@ -148,7 +172,14 @@ function applyPreferencesToElement(root: HTMLElement, prefs: StillPreferences): 
 }
 
 function syncDockPreferences(root: HTMLElement, prefs: StillPreferences): void {
-  for (const field of ['theme', 'fontSize', 'columnWidth', 'lineHeight', 'highContrast'] as const) {
+  for (const field of [
+    'theme',
+    'fontFamily',
+    'fontSize',
+    'columnWidth',
+    'lineHeight',
+    'highContrast',
+  ] as const) {
     const buttons = root.querySelectorAll<HTMLButtonElement>(
       `.still-segment-btn[data-field="${field}"]`,
     );
@@ -221,6 +252,11 @@ function segmentAriaKey(field: SegmentField, value: string): MessageKey {
       compact: 'ariaLineHeightCompact',
       default: 'ariaLineHeightDefault',
       relaxed: 'ariaLineHeightRelaxed',
+    },
+    fontFamily: {
+      inter: 'ariaFontInter',
+      atkinson: 'ariaFontAtkinson',
+      system: 'ariaFontSystem',
     },
   };
 
@@ -394,6 +430,20 @@ function createFloatingDock(
   fontSizeLabel.className = 'still-popover-label';
   fontSizeLabel.textContent = t('textSize');
   fontSizeSection.appendChild(fontSizeLabel);
+  const fontFamilySection = document.createElement('div');
+  fontFamilySection.className = 'still-popover-section';
+  const fontFamilyLabel = document.createElement('span');
+  fontFamilyLabel.className = 'still-popover-label';
+  fontFamilyLabel.textContent = t('font');
+  fontFamilySection.appendChild(fontFamilyLabel);
+  fontFamilySection.appendChild(
+    createSegmentedControl('fontFamily', t('font'), prefs, [
+      { value: 'inter', label: t('fontInter') },
+      { value: 'atkinson', label: t('fontAtkinson') },
+      { value: 'system', label: t('fontSystem') },
+    ]),
+  );
+
   fontSizeSection.appendChild(
     createSegmentedControl('fontSize', t('textSize'), prefs, [
       { value: 'small', label: '<span class="still-size-label still-size-label--small">A</span>' },
@@ -482,6 +532,7 @@ function createFloatingDock(
 
   popover.append(
     themeSection,
+    fontFamilySection,
     fontSizeSection,
     lineHeightSection,
     columnWidthSection,
@@ -581,6 +632,7 @@ function createFloatingDock(
       const field = button.dataset.field as SegmentField;
       const value = button.dataset.value as
         | Theme
+        | FontFamily
         | FontSize
         | ColumnWidth
         | LineHeight
