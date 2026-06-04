@@ -1,5 +1,9 @@
 import { extractArticle } from '~/utils/extract-article';
-import { getPreferences, onPreferencesChanged } from '~/utils/preferences';
+import {
+  getPreferences,
+  onPreferencesChanged,
+  type StillPreferences,
+} from '~/utils/preferences';
 import {
   applyPreferencesToOverlay,
   createReaderOverlay,
@@ -11,11 +15,33 @@ import { showToast } from '~/utils/toast';
 
 let activeReader: ReaderOverlayHandle | null = null;
 let focusBeforeStill: HTMLElement | null = null;
+let cachedPrefs: StillPreferences | null = null;
+
+function prefersReducedMotion(prefs: StillPreferences | null): boolean {
+  if (prefs?.reduceMotion) {
+    return true;
+  }
+
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function runViewTransition(updateDom: () => void, prefs: StillPreferences | null): void {
+  if (document.startViewTransition && !prefersReducedMotion(prefs)) {
+    document.startViewTransition(updateDom);
+    return;
+  }
+
+  updateDom();
+}
 
 function exitStill(): void {
-  activeReader?.destroy();
-  activeReader = null;
-  focusBeforeStill = null;
+  const performExit = (): void => {
+    activeReader?.destroy();
+    activeReader = null;
+    focusBeforeStill = null;
+  };
+
+  runViewTransition(performExit, cachedPrefs);
 }
 
 async function enterStill(): Promise<void> {
@@ -35,14 +61,26 @@ async function enterStill(): Promise<void> {
   focusBeforeStill = active instanceof HTMLElement ? active : null;
 
   const prefs = await getPreferences();
-  activeReader = createReaderOverlay(article, exitStill, prefs, focusBeforeStill);
+  cachedPrefs = prefs;
+
+  const performEnter = (): void => {
+    activeReader = createReaderOverlay(article, exitStill, prefs, focusBeforeStill);
+  };
+
+  runViewTransition(performEnter, prefs);
 }
 
 export default defineContentScript({
   matches: ['<all_urls>'],
   runAt: 'document_idle',
   main() {
+    void getPreferences().then((prefs) => {
+      cachedPrefs = prefs;
+    });
+
     onPreferencesChanged((prefs) => {
+      cachedPrefs = prefs;
+
       if (getActiveOverlay()) {
         applyPreferencesToOverlay(prefs);
       }
