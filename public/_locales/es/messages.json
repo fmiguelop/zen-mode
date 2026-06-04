@@ -107,6 +107,9 @@
   "optionsAppearance": {
     "message": "Apariencia"
   },
+  "optionsReading": {
+    "message": "Lectura"
+  },
   "optionsAccessibility": {
     "message": "Accesibilidad"
   },

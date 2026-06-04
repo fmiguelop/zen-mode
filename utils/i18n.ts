@@ -31,6 +31,7 @@ export type MessageKey =
   | 'skipToArticle'
   | 'optionsPageTitle'
   | 'optionsAppearance'
+  | 'optionsReading'
   | 'optionsAccessibility'
   | 'prefHighContrast'
   | 'prefHighContrastSystem'

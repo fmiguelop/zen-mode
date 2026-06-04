@@ -164,11 +164,20 @@
         margin-top: 0.5rem;
       }
 
-      .still-pref-label {
-        margin: 1rem 0 0.5rem;
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--still-ink);
+      .still-control-group {
+        margin-bottom: 1rem;
+      }
+
+      .still-control-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .still-control-label {
+        display: block;
+        margin: 0 0 0.375rem;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: var(--still-muted);
       }
 
       kbd {
@@ -254,208 +263,208 @@
     </section>
 
     <section>
-      <h2 data-i18n="font">Font</h2>
-      <div class="still-segmented-control" role="radiogroup" data-i18n-aria="font">
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="fontFamily"
-          data-value="inter"
-          data-aria-key="ariaFontInter"
-          role="radio"
-          aria-checked="false"
-        >
-          <span data-i18n="fontInter">Inter</span>
-        </button>
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="fontFamily"
-          data-value="atkinson"
-          data-aria-key="ariaFontAtkinson"
-          role="radio"
-          aria-checked="false"
-        >
-          <span data-i18n="fontAtkinson">Atkinson</span>
-        </button>
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="fontFamily"
-          data-value="system"
-          data-aria-key="ariaFontSystem"
-          role="radio"
-          aria-checked="false"
-        >
-          <span data-i18n="fontSystem">System</span>
-        </button>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="textSize">Text size</h2>
-      <div class="still-segmented-control" role="radiogroup" data-i18n-aria="textSize">
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="fontSize"
-          data-value="small"
-          data-aria-key="ariaFontSizeSmall"
-          role="radio"
-          aria-checked="false"
-        >
-          <span class="still-size-label still-size-label--small">A</span>
-        </button>
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="fontSize"
-          data-value="medium"
-          data-aria-key="ariaFontSizeMedium"
-          role="radio"
-          aria-checked="false"
-        >
-          <span class="still-size-label still-size-label--medium">A</span>
-        </button>
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="fontSize"
-          data-value="large"
-          data-aria-key="ariaFontSizeLarge"
-          role="radio"
-          aria-checked="false"
-        >
-          <span class="still-size-label still-size-label--large">A</span>
-        </button>
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="fontSize"
-          data-value="xlarge"
-          data-aria-key="ariaFontSizeXlarge"
-          role="radio"
-          aria-checked="false"
-        >
-          <span class="still-size-label still-size-label--xlarge">A</span>
-        </button>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="lineHeight">Line height</h2>
-      <div class="still-segmented-control" role="radiogroup" data-i18n-aria="lineHeight">
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="lineHeight"
-          data-value="compact"
-          data-aria-key="ariaLineHeightCompact"
-          role="radio"
-          aria-checked="false"
-        >
-          <span data-i18n="lineHeightCompact">Compact</span>
-        </button>
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="lineHeight"
-          data-value="default"
-          data-aria-key="ariaLineHeightDefault"
-          role="radio"
-          aria-checked="false"
-        >
-          <span data-i18n="lineHeightDefault">Default</span>
-        </button>
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="lineHeight"
-          data-value="relaxed"
-          data-aria-key="ariaLineHeightRelaxed"
-          role="radio"
-          aria-checked="false"
-        >
-          <span data-i18n="lineHeightRelaxed">Relaxed</span>
-        </button>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="columnWidth">Column width</h2>
-      <div class="still-segmented-control" role="radiogroup" data-i18n-aria="columnWidth">
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="columnWidth"
-          data-value="narrow"
-          data-aria-key="ariaColumnWidthNarrow"
-          role="radio"
-          aria-checked="false"
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            aria-hidden="true"
+      <h2 data-i18n="optionsReading">Reading</h2>
+      <div class="still-control-group">
+        <label class="still-control-label" data-i18n="font">Font</label>
+        <div class="still-segmented-control" role="radiogroup" data-i18n-aria="font">
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="fontFamily"
+            data-value="inter"
+            data-aria-key="ariaFontInter"
+            role="radio"
+            aria-checked="false"
           >
-            <line x1="8" y1="6" x2="16" y2="6"></line>
-            <line x1="8" y1="12" x2="16" y2="12"></line>
-            <line x1="8" y1="18" x2="16" y2="18"></line>
-          </svg>
-        </button>
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="columnWidth"
-          data-value="default"
-          data-aria-key="ariaColumnWidthDefault"
-          role="radio"
-          aria-checked="false"
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            aria-hidden="true"
+            <span data-i18n="fontInter">Inter</span>
+          </button>
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="fontFamily"
+            data-value="atkinson"
+            data-aria-key="ariaFontAtkinson"
+            role="radio"
+            aria-checked="false"
           >
-            <line x1="5" y1="6" x2="19" y2="6"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <line x1="5" y1="18" x2="19" y2="18"></line>
-          </svg>
-        </button>
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="columnWidth"
-          data-value="wide"
-          data-aria-key="ariaColumnWidthWide"
-          role="radio"
-          aria-checked="false"
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            aria-hidden="true"
+            <span data-i18n="fontAtkinson">Atkinson</span>
+          </button>
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="fontFamily"
+            data-value="system"
+            data-aria-key="ariaFontSystem"
+            role="radio"
+            aria-checked="false"
           >
-            <line x1="2" y1="6" x2="22" y2="6"></line>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <line x1="2" y1="18" x2="22" y2="18"></line>
-          </svg>
-        </button>
+            <span data-i18n="fontSystem">System</span>
+          </button>
+        </div>
+      </div>
+      <div class="still-control-group">
+        <label class="still-control-label" data-i18n="textSize">Text size</label>
+        <div class="still-segmented-control" role="radiogroup" data-i18n-aria="textSize">
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="fontSize"
+            data-value="small"
+            data-aria-key="ariaFontSizeSmall"
+            role="radio"
+            aria-checked="false"
+          >
+            <span class="still-size-label still-size-label--small">A</span>
+          </button>
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="fontSize"
+            data-value="medium"
+            data-aria-key="ariaFontSizeMedium"
+            role="radio"
+            aria-checked="false"
+          >
+            <span class="still-size-label still-size-label--medium">A</span>
+          </button>
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="fontSize"
+            data-value="large"
+            data-aria-key="ariaFontSizeLarge"
+            role="radio"
+            aria-checked="false"
+          >
+            <span class="still-size-label still-size-label--large">A</span>
+          </button>
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="fontSize"
+            data-value="xlarge"
+            data-aria-key="ariaFontSizeXlarge"
+            role="radio"
+            aria-checked="false"
+          >
+            <span class="still-size-label still-size-label--xlarge">A</span>
+          </button>
+        </div>
+      </div>
+      <div class="still-control-group">
+        <label class="still-control-label" data-i18n="lineHeight">Line height</label>
+        <div class="still-segmented-control" role="radiogroup" data-i18n-aria="lineHeight">
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="lineHeight"
+            data-value="compact"
+            data-aria-key="ariaLineHeightCompact"
+            role="radio"
+            aria-checked="false"
+          >
+            <span data-i18n="lineHeightCompact">Compact</span>
+          </button>
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="lineHeight"
+            data-value="default"
+            data-aria-key="ariaLineHeightDefault"
+            role="radio"
+            aria-checked="false"
+          >
+            <span data-i18n="lineHeightDefault">Default</span>
+          </button>
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="lineHeight"
+            data-value="relaxed"
+            data-aria-key="ariaLineHeightRelaxed"
+            role="radio"
+            aria-checked="false"
+          >
+            <span data-i18n="lineHeightRelaxed">Relaxed</span>
+          </button>
+        </div>
+      </div>
+      <div class="still-control-group">
+        <label class="still-control-label" data-i18n="columnWidth">Column width</label>
+        <div class="still-segmented-control" role="radiogroup" data-i18n-aria="columnWidth">
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="columnWidth"
+            data-value="narrow"
+            data-aria-key="ariaColumnWidthNarrow"
+            role="radio"
+            aria-checked="false"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <line x1="8" y1="6" x2="16" y2="6"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+              <line x1="8" y1="18" x2="16" y2="18"></line>
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="columnWidth"
+            data-value="default"
+            data-aria-key="ariaColumnWidthDefault"
+            role="radio"
+            aria-checked="false"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <line x1="5" y1="6" x2="19" y2="6"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <line x1="5" y1="18" x2="19" y2="18"></line>
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="columnWidth"
+            data-value="wide"
+            data-aria-key="ariaColumnWidthWide"
+            role="radio"
+            aria-checked="false"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <line x1="2" y1="6" x2="22" y2="6"></line>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <line x1="2" y1="18" x2="22" y2="18"></line>
+            </svg>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -467,41 +476,43 @@
       <p data-i18n="optionsSystemContrastHint">
         High contrast “System” follows your device increase-contrast setting.
       </p>
-      <p class="still-pref-label" data-i18n="prefHighContrast">High contrast</p>
-      <div class="still-segmented-control" role="radiogroup" data-i18n-aria="prefHighContrast">
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="highContrast"
-          data-value="system"
-          data-aria-key="ariaHighContrastSystem"
-          role="radio"
-          aria-checked="false"
-        >
-          <span data-i18n="prefHighContrastSystem">System</span>
-        </button>
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="highContrast"
-          data-value="on"
-          data-aria-key="ariaHighContrastOn"
-          role="radio"
-          aria-checked="false"
-        >
-          <span data-i18n="prefHighContrastOn">On</span>
-        </button>
-        <button
-          type="button"
-          class="still-segment-btn"
-          data-field="highContrast"
-          data-value="off"
-          data-aria-key="ariaHighContrastOff"
-          role="radio"
-          aria-checked="false"
-        >
-          <span data-i18n="prefHighContrastOff">Off</span>
-        </button>
+      <div class="still-control-group">
+        <label class="still-control-label" data-i18n="prefHighContrast">High contrast</label>
+        <div class="still-segmented-control" role="radiogroup" data-i18n-aria="prefHighContrast">
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="highContrast"
+            data-value="system"
+            data-aria-key="ariaHighContrastSystem"
+            role="radio"
+            aria-checked="false"
+          >
+            <span data-i18n="prefHighContrastSystem">System</span>
+          </button>
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="highContrast"
+            data-value="on"
+            data-aria-key="ariaHighContrastOn"
+            role="radio"
+            aria-checked="false"
+          >
+            <span data-i18n="prefHighContrastOn">On</span>
+          </button>
+          <button
+            type="button"
+            class="still-segment-btn"
+            data-field="highContrast"
+            data-value="off"
+            data-aria-key="ariaHighContrastOff"
+            role="radio"
+            aria-checked="false"
+          >
+            <span data-i18n="prefHighContrastOff">Off</span>
+          </button>
+        </div>
       </div>
       <label class="still-pref-toggle">
         <input type="checkbox" data-pref="underlineLinks" />
