@@ -15,7 +15,6 @@ export default defineConfig({
         description: '__MSG_cmdToggleStill__',
       },
     },
-    host_permissions: ['<all_urls>'],
     action: {
       default_title: '__MSG_actionDefaultTitle__',
     },
@@ -23,6 +22,7 @@ export default defineConfig({
       {
         resources: ['fonts/*'],
         matches: ['<all_urls>'],
+        use_dynamic_url: true,
       },
     ],
   },

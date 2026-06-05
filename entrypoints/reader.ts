@@ -13,6 +13,8 @@ import {
 import { t } from '~/utils/i18n';
 import { showToast } from '~/utils/toast';
 
+const STILL_READER_INITIALIZED_KEY = '__stillReaderInitialized';
+
 let activeReader: ReaderOverlayHandle | null = null;
 let focusBeforeStill: HTMLElement | null = null;
 let cachedPrefs: StillPreferences | null = null;
@@ -78,26 +80,34 @@ async function enterStill(): Promise<void> {
   runViewTransition(performEnter, prefs);
 }
 
-export default defineContentScript({
-  matches: ['<all_urls>'],
-  runAt: 'document_idle',
-  main() {
-    void getPreferences().then((prefs) => {
-      cachedPrefs = prefs;
-    });
+function initializeReader(): void {
+  const globalScope = globalThis as typeof globalThis & {
+    [STILL_READER_INITIALIZED_KEY]?: boolean;
+  };
 
-    onPreferencesChanged((prefs) => {
-      cachedPrefs = prefs;
+  if (globalScope[STILL_READER_INITIALIZED_KEY]) {
+    return;
+  }
 
-      if (getActiveOverlay()) {
-        applyPreferencesToOverlay(prefs);
-      }
-    });
+  globalScope[STILL_READER_INITIALIZED_KEY] = true;
 
-    browser.runtime.onMessage.addListener((message) => {
-      if (message?.type === 'ENTER_STILL') {
-        void enterStill();
-      }
-    });
-  },
-});
+  void getPreferences().then((prefs) => {
+    cachedPrefs = prefs;
+  });
+
+  onPreferencesChanged((prefs) => {
+    cachedPrefs = prefs;
+
+    if (getActiveOverlay()) {
+      applyPreferencesToOverlay(prefs);
+    }
+  });
+
+  browser.runtime.onMessage.addListener((message) => {
+    if (message?.type === 'ENTER_STILL') {
+      void enterStill();
+    }
+  });
+}
+
+export default defineUnlistedScript(initializeReader);

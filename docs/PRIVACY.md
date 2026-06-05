@@ -1,6 +1,6 @@
 # Privacy Policy — Still
 
-**Last updated:** June 4, 2026
+**Last updated:** June 5, 2026
 
 Still ("the Extension") is a browser extension that provides a distraction-free reader mode for web articles. This policy explains what data the Extension accesses and how it is handled.
 
@@ -59,14 +59,13 @@ Still requests the following browser permissions:
 
 | Permission | Why |
 |---|---|
-| `activeTab` | Access the current tab when you activate Still (toolbar or keyboard shortcut) |
-| `scripting` | Inject the content script on first use if not already loaded |
+| `activeTab` | Access the current tab only when you activate Still (toolbar or keyboard shortcut) |
+| `scripting` | Inject the reader script into the active tab after you activate Still |
 | `storage` | Save optional reading preferences |
-| `<all_urls>` (host access) | Read page content on whichever site you choose to use Still on |
 
 The default keyboard shortcut is `Alt+Shift+S` (Mac: `Option+Shift+S`). You can change it in Chrome's extension shortcuts settings (`chrome://extensions/shortcuts`). Still does not log or transmit which pages you use.
 
-Still does not access tabs you have not explicitly activated. It does not run in the background on pages you haven't interacted with.
+Still does not request broad all-site host access. Page DOM access is granted only for the active tab after you explicitly activate Still. Still does not access tabs you have not activated, and it does not run in the background on pages you haven't interacted with.
 
 ## Third-Party Services
 

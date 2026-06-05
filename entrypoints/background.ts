@@ -5,8 +5,8 @@ import {
   trackFullscreenSession,
 } from '~/utils/fullscreen-session';
 import { getPreferences } from '~/utils/preferences';
+import { activateStillOnTab, READER_SCRIPT_PATH } from '~/utils/still-activation';
 
-const ENTER_STILL_MESSAGE = { type: 'ENTER_STILL' } as const;
 const EXIT_STILL_MESSAGE = { type: 'EXIT_STILL' } as const;
 
 async function maybeEnterFullscreenForTab(tab: Browser.tabs.Tab): Promise<void> {
@@ -51,26 +51,23 @@ async function restoreFullscreenForTab(tabId: number): Promise<void> {
 }
 
 async function triggerStill(tab: Browser.tabs.Tab): Promise<void> {
-  if (!tab.id) {
+  const tabId = tab.id;
+  if (tabId === undefined) {
     return;
   }
 
   await maybeEnterFullscreenForTab(tab);
 
-  try {
-    await browser.tabs.sendMessage(tab.id, ENTER_STILL_MESSAGE);
-  } catch {
-    try {
-      await browser.scripting.executeScript({
-        target: { tabId: tab.id },
-        files: ['/content-scripts/content.js'],
-      });
-      await browser.tabs.sendMessage(tab.id, ENTER_STILL_MESSAGE);
-    } catch {
-      void restoreFullscreenForTab(tab.id);
-      // Restricted pages (chrome://, Web Store, PDFs, etc.)
-    }
-  }
+  await activateStillOnTab(
+    tabId,
+    (id, message) => browser.tabs.sendMessage(id, message),
+    (details) =>
+      browser.scripting.executeScript({
+        target: { tabId: details.target.tabId },
+        files: [READER_SCRIPT_PATH],
+      }),
+    () => restoreFullscreenForTab(tabId),
+  );
 }
 
 async function triggerStillOnActiveTab(): Promise<void> {
