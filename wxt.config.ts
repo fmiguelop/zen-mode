@@ -15,7 +15,6 @@ export default defineConfig({
         description: '__MSG_cmdToggleStill__',
       },
     },
-    host_permissions: ['<all_urls>'],
     action: {
       default_title: '__MSG_actionDefaultTitle__',
     },
