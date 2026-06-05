@@ -9,7 +9,11 @@ interface GeneratedManifest {
   permissions?: string[];
   host_permissions?: string[];
   content_scripts?: Array<{ matches?: string[] }>;
-  web_accessible_resources?: Array<{ resources?: string[]; matches?: string[] }>;
+  web_accessible_resources?: Array<{
+    resources?: string[];
+    matches?: string[];
+    use_dynamic_url?: boolean;
+  }>;
 }
 
 function readGeneratedManifest(): GeneratedManifest {
@@ -44,6 +48,7 @@ describe.skipIf(!manifestExists)('generated Chrome MV3 manifest', () => {
       {
         resources: ['fonts/*'],
         matches: ['<all_urls>'],
+        use_dynamic_url: true,
       },
     ]);
   });

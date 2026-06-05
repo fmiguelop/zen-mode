@@ -22,6 +22,7 @@ export default defineConfig({
       {
         resources: ['fonts/*'],
         matches: ['<all_urls>'],
+        use_dynamic_url: true,
       },
     ],
   },
