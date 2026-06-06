@@ -2,6 +2,13 @@
 
 All notable changes to Still are documented here. Versions follow [Semantic Versioning](https://semver.org/).
 
+## 0.3.1 — June 2026
+
+### Improved
+- **Privacy-first page access** — Still only reads the page you are on after you click the extension or use the keyboard shortcut. It no longer asks for access to every site up front.
+- **Reader script on demand** — the reader loads into the active tab when you activate Still, not in the background on pages you have not opened.
+- **Bundled fonts** — Inter and Atkinson Hyperlegible still load locally from inside the extension.
+
 ## 0.3.0 — June 2026
 
 ### Added

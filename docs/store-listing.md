@@ -46,9 +46,12 @@ HOW IT WORKS
 • Press Esc or click Exit Still to return to the original page
 
 READING FEATURES
-• Clean typography with bundled Inter font — no external font requests
-• Light, dark, and warm reader themes
-• Adjustable text size (+ / −) and column width
+• Bundled Inter and Atkinson Hyperlegible fonts, or your system font — no external font requests
+• Light, dark, warm, or system-matched reader themes
+• Adjustable text size (+ / −), column width, and line height
+• High contrast, underline links, hide images, reduce motion, and keep the dock visible
+• Optional fullscreen when Still opens
+• English and Spanish interface
 • Reading time estimate and scroll progress in the header
 • View original link to open the source page
 • Scroll position restored when you re-open Still on the same page in the same session
@@ -56,8 +59,8 @@ READING FEATURES
 PRIVACY
 • Article extraction happens entirely on your device
 • Still does not collect browsing history or store article text after you exit
-• Still requests only active-tab access — page content is read only after you click the toolbar icon or use the keyboard shortcut
-• Optional display preferences (theme, text size, column width) are saved locally and may sync through Chrome if you use browser sync
+• Still only reads the current page after you click the toolbar icon or use the keyboard shortcut — it does not access pages in the background
+• Optional reading preferences are saved locally and may sync through Chrome if you use browser sync
 • Full privacy policy: https://still.fmiguelop.dev/privacy
 
 WORKS BEST ON
@@ -183,3 +186,13 @@ The marketing site can sync finalized PNGs from that folder — see `still-marke
 ## Single-purpose statement (for review notes, if asked)
 
 Still is a reader-mode extension. When the user clicks the toolbar icon or keyboard shortcut, it injects a reader script into the current tab, extracts the main article locally, and displays it in a full-screen overlay. Still does not request broad all-site host access and does not modify pages unless explicitly activated by the user.
+
+---
+
+## 0.3.1 review notes
+
+Paste this in the Chrome Web Store submission notes when uploading the `0.3.1` package:
+
+```
+This release removes broad site access; Still now reads the active page only after the user clicks the extension or uses the shortcut.
+```
